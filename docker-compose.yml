@@ -1,0 +1,5 @@
+services:
+  blog-api:
+    image: buyallmemes/blog-api:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
