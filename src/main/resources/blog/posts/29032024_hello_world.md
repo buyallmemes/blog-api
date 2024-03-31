@@ -22,4 +22,5 @@ So, for now, it's a single-repo-almost-a-static-page-thingy - https://github.com
 Also, I kinda enjoy writing from time to time + I'm a programmer, so why not combine the best of both worlds — create a
 place where a can park some of my thoughts for good.
 
+
 Time of writing: 29.03.2024, sometime afternoon.
