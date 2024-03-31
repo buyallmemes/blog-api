@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -18,6 +19,7 @@ class BlogApiApplicationTests {
     void shouldReturnBlogPost() {
         Post[] posts = restTemplate.getForObject("/posts", Post[].class);
         assertNotNull(posts[0]);
+        assertEquals(2, posts.length);
     }
 
 }

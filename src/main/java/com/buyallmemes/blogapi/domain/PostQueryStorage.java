@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -29,20 +29,30 @@ class PostQueryStorage {
     }
 
     private List<String> getPostFilesContent() {
-        try {
-            URI uri = getClass().getClassLoader()
-                                .getResource("blog/posts")
-                                .toURI();
-            Path path = Paths.get(uri);
-            File[] files = path.toFile()
-                               .listFiles();
+        URI uri = buildURI();
+        File[] files = Paths.get(uri)
+                            .toFile()
+                            .listFiles();
+        return Arrays.stream(files)
+                     .map(File::toPath)
+                     .map(this::readString)
+                     .toList();
+    }
 
-            List<String> result = new ArrayList<>();
-            for (File file : files) {
-                result.add(Files.readString(file.toPath()));
-            }
-            return result;
-        } catch (URISyntaxException | IOException e) {
+    private URI buildURI() {
+        try {
+            return getClass().getClassLoader()
+                             .getResource("blog/posts")
+                             .toURI();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String readString(Path path) {
+        try {
+            return Files.readString(path);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
