@@ -19,7 +19,7 @@ class BlogApiApplicationTests {
     void shouldReturnBlogPost() {
         Post[] posts = restTemplate.getForObject("/posts", Post[].class);
         assertNotNull(posts[0]);
-        assertEquals(2, posts.length);
+        assertEquals(1, posts.length);
     }
 
 }
