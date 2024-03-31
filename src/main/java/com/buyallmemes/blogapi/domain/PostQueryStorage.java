@@ -15,43 +15,48 @@ import java.util.List;
 @Component
 class PostQueryStorage {
 
+    private final static String POSTS_PATH = "blog/posts";
+
     public List<Post> getAllPosts() {
-        return getPostFilesContent().stream()
-                                    .map(this::buildPost)
-                                    .toList();
-
-    }
-
-    private Post buildPost(String content) {
-        return Post.builder()
-                   .content(content)
-                   .build();
-    }
-
-    private List<String> getPostFilesContent() {
-        URI uri = buildURI();
-        File[] files = Paths.get(uri)
-                            .toFile()
-                            .listFiles();
+        File[] files = getBlogPostFiles();
         return Arrays.stream(files)
                      .map(File::toPath)
-                     .map(this::readString)
+                     .map(this::buildPost)
+                     .sorted(this::reverseFileName)
                      .toList();
+    }
+
+    private File[] getBlogPostFiles() {
+        URI uri = buildURI();
+        return Paths.get(uri)
+                    .toFile()
+                    .listFiles();
+    }
+
+    private int reverseFileName(Post p1, Post p2) {
+        return p2.filename()
+                 .compareTo(p1.filename());
     }
 
     private URI buildURI() {
         try {
             return getClass().getClassLoader()
-                             .getResource("blog/posts")
+                             .getResource(POSTS_PATH)
                              .toURI();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String readString(Path path) {
+    private Post buildPost(Path path) {
         try {
-            return Files.readString(path);
+            String fileName = path.getFileName()
+                                  .toString();
+            String content = Files.readString(path);
+            return Post.builder()
+                       .filename(fileName)
+                       .content(content)
+                       .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BlogApiApplicationTests {
@@ -18,8 +17,10 @@ class BlogApiApplicationTests {
     @Test
     void shouldReturnBlogPost() {
         Post[] posts = restTemplate.getForObject("/posts", Post[].class);
-        assertNotNull(posts[0]);
-        assertEquals(1, posts.length);
+        assertEquals(2, posts.length);
+
+        assertEquals("31032024.md", posts[0].filename());
+        assertEquals("29032024_hello_world.md", posts[1].filename());
     }
 
 }
