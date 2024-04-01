@@ -11,10 +11,11 @@ import java.util.List;
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 class BlogController {
-    private final PostQueryStorage postQueryStorage;
+
+    private final BlogPostsRetriever blogPostsRetriever;
 
     @GetMapping
     List<Post> getPosts() {
-        return postQueryStorage.getAllPosts();
+        return blogPostsRetriever.getAllPosts();
     }
 }
