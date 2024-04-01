@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.buyallmemes'
-version = '0.4.0'
+version = '0.4.1'
 
 java {
     sourceCompatibility = '21'
@@ -43,7 +43,8 @@ jib {
         image = 'amazoncorretto:21-alpine'
     }
     to {
-        image = "723393662260.dkr.ecr.eu-central-1.amazonaws.com/buyallmemes/${project.name}:latest"
+        image = "723393662260.dkr.ecr.eu-central-1.amazonaws.com/buyallmemes/${project.name}"
+        tags = ['latest', "${project.version}"]
     }
 }
 
