@@ -6,14 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
 class GitHubPostRepository implements PostQueryRepository {
 
