@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.buyallmemes'
-version = '0.5.1'
+version = '0.5.2'
 
 java {
     sourceCompatibility = '21'
