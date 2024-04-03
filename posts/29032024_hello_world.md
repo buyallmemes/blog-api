@@ -1,4 +1,4 @@
-# <a id="hello-world" href="#hello-world"></a>Hello, world!
+# Hello, world!
 
 I hate frontend. But at least, I figured out how to use markdown to render content, so I don't have to struggle with
 WYSIWYG editors, at least now.
