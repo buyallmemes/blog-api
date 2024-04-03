@@ -2,6 +2,7 @@ package com.buyallmemes.blogapi.github;
 
 import com.buyallmemes.blogapi.domain.Post;
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
+import com.buyallmemes.blogapi.github.dependencies.GitHubMDtoHTMLRenderer;
 import lombok.RequiredArgsConstructor;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
@@ -17,7 +18,9 @@ class GitHubPostRepository implements PostQueryRepository {
 
     public static final String REPOSITORY_PATH = "buyallmemes/blog-api";
     public static final String PATH_TO_POSTS = "posts";
+
     private final GitHub gitHubClient;
+    private final GitHubMDtoHTMLRenderer htmlRenderer;
 
     @Override
     public List<Post> getAllPosts() {
@@ -46,8 +49,9 @@ class GitHubPostRepository implements PostQueryRepository {
         try (InputStream inputStream = fileContent.read()) {
             byte[] content = inputStream
                     .readAllBytes();
-            String stringContent = new String(content, StandardCharsets.UTF_8);
-            return new Post(fileContent.getName(), stringContent);
+            String mdContent = new String(content, StandardCharsets.UTF_8);
+            String renderedHtml = htmlRenderer.renderHtml(mdContent);
+            return new Post(fileContent.getName(), renderedHtml);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

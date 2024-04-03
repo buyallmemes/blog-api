@@ -1,6 +1,7 @@
 package com.buyallmemes.blogapi.github;
 
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
+import com.buyallmemes.blogapi.github.dependencies.GitHubMDtoHTMLRenderer;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,7 @@ public class GitHubConfiguration {
     }
 
     @Bean
-    PostQueryRepository gitHubPostRepository(GitHub gitHub) {
-        return new GitHubPostRepository(gitHub);
+    PostQueryRepository gitHubPostRepository(GitHub gitHub, GitHubMDtoHTMLRenderer htmlRenderer) {
+        return new GitHubPostRepository(gitHub, htmlRenderer);
     }
 }

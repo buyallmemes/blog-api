@@ -2,6 +2,8 @@ package com.buyallmemes.blogapi.local;
 
 import com.buyallmemes.blogapi.domain.Post;
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
+import com.buyallmemes.blogapi.local.dependencies.LocalMDtoHTMLRenderer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +21,13 @@ import java.util.List;
  * Mainly used for development.
  */
 @Component
+@RequiredArgsConstructor
 @ConditionalOnProperty(name = "blog.posts.fetch-from-github", havingValue = "false", matchIfMissing = true)
 class LocalPostRepository implements PostQueryRepository {
 
     private final static String POSTS_PATH = "posts";
+
+    private final LocalMDtoHTMLRenderer htmlRenderer;
 
     @Override
     public List<Post> getAllPosts() {
@@ -51,10 +56,11 @@ class LocalPostRepository implements PostQueryRepository {
         try {
             String fileName = path.getFileName()
                                   .toString();
-            String content = Files.readString(path);
+            String mdContent = Files.readString(path);
+            String htmlContent = htmlRenderer.renderHtml(mdContent);
             return Post.builder()
                        .filename(fileName)
-                       .content(content)
+                       .content(htmlContent)
                        .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
