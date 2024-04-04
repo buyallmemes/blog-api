@@ -3,6 +3,7 @@ package com.buyallmemes.blogapi.local;
 import com.buyallmemes.blogapi.domain.Post;
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
 import com.buyallmemes.blogapi.local.dependencies.LocalMDtoHTMLRenderer;
+import com.buyallmemes.blogapi.mdparser.ParsedMD;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ class LocalPostRepository implements PostQueryRepository {
     public List<Post> getAllPosts() {
         File[] files = findBlogPostFiles();
         return Arrays.stream(files)
+                     .filter(File::isFile)
                      .map(File::toPath)
                      .map(this::buildPost)
                      .sorted(this::reverseFileName)
@@ -57,10 +59,13 @@ class LocalPostRepository implements PostQueryRepository {
             String fileName = path.getFileName()
                                   .toString();
             String mdContent = Files.readString(path);
-            String htmlContent = htmlRenderer.renderHtml(mdContent);
+            ParsedMD parsedMD = htmlRenderer.renderHtml(mdContent);
             return Post.builder()
                        .filename(fileName)
-                       .content(htmlContent)
+                       .date(parsedMD.date())
+                       .title(parsedMD.title())
+                       .content(parsedMD.html())
+                       .anchor(parsedMD.anchor())
                        .build();
         } catch (IOException e) {
             throw new RuntimeException(e);

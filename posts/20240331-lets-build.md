@@ -1,4 +1,7 @@
-# Let's build
+---
+title: Let's build
+date: 31.03.2024
+---
 
 So, the tech.
 Oh yes, the most important part — the tech.
@@ -164,8 +167,6 @@ Saying that, the more I think about it, the more I realize that I should've gone
 and build everything within the backend app, but what's done is done.
 Having a separate frontend app is not without its benefits anyway.
 Plus, I can definitely benefit from expanding my horizons beyond backend and Java.
-
-Time of writing: 31.03.2024, sometime afternoon.
 
 
 

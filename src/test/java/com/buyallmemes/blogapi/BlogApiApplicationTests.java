@@ -8,8 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BlogApiApplicationTests {
@@ -23,10 +22,12 @@ class BlogApiApplicationTests {
         List<Post> posts = List.of(response);
         assertTrue(posts.size() > 1);
 
-        assertEquals("31032024.md", posts.get(posts.size() - 2)
-                                         .filename());
-        assertEquals("29032024_hello_world.md", posts.getLast()
-                                                     .filename());
+        assertAll(
+                () -> assertEquals("20240331-lets-build.md", posts.get(posts.size() - 2)
+                                                                  .filename()),
+                () -> assertEquals("20240329-hello-world.md", posts.getLast()
+                                                                   .filename()));
+
     }
 
 }

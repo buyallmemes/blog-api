@@ -3,6 +3,7 @@ package com.buyallmemes.blogapi.github;
 import com.buyallmemes.blogapi.domain.Post;
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
 import com.buyallmemes.blogapi.github.dependencies.GitHubMDtoHTMLRenderer;
+import com.buyallmemes.blogapi.mdparser.ParsedMD;
 import lombok.RequiredArgsConstructor;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
@@ -50,8 +51,14 @@ class GitHubPostRepository implements PostQueryRepository {
             byte[] content = inputStream
                     .readAllBytes();
             String mdContent = new String(content, StandardCharsets.UTF_8);
-            String renderedHtml = htmlRenderer.renderHtml(mdContent);
-            return new Post(fileContent.getName(), renderedHtml);
+            ParsedMD parsedMD = htmlRenderer.renderHtml(mdContent);
+            return Post.builder()
+                       .filename(fileContent.getName())
+                       .content(parsedMD.html())
+                       .date(parsedMD.date())
+                       .title(parsedMD.title())
+                       .anchor(parsedMD.anchor())
+                       .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

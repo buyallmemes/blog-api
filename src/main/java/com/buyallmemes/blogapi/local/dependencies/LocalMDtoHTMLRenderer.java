@@ -1,5 +1,7 @@
 package com.buyallmemes.blogapi.local.dependencies;
 
+import com.buyallmemes.blogapi.mdparser.ParsedMD;
+
 public interface LocalMDtoHTMLRenderer {
-    String renderHtml(String mdContent);
+    ParsedMD renderHtml(String mdContent);
 }
