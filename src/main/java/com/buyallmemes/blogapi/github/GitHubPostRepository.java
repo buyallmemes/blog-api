@@ -29,6 +29,8 @@ class GitHubPostRepository implements PostQueryRepository {
             GHRepository repository = gitHubClient.getRepository(REPOSITORY_PATH);
             return repository.getDirectoryContent(PATH_TO_POSTS)
                              .stream()
+                             .filter(ghContent -> ghContent.getName()
+                                                           .endsWith(".md"))
                              .map(ghContent -> fetchPostsFromRepo(ghContent, repository))
                              .toList();
         } catch (IOException e) {
