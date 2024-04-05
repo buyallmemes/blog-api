@@ -41,7 +41,7 @@ It might be a single class, a package, a component, a group of packages, a modul
 web service.
 For example, code that calls the database to fetch a user. There are many possible names for such a thing: domain,
 module, component, package, service, etc.
-Name is not important, as long as it's consistent throughout the discussion.
+Name is unimportant, as long as it's consistent throughout the discussion.
 I'll call it a **module**.
 A module that queries a user from somewhere (presumably DB) - the `UserModule`.
 That's the first.
@@ -117,7 +117,7 @@ According to the code **NotificationModule** _depends on_ **UserModule**.
 Such code could be found **everywhere**.
 I would go as far as to say that 99% of the code I've read(and written) looks like this.
 And it might seem that there's nothing wrong with it.
-In the end, it works, it is straightforward to read, easy to understand.
+In the end, it works, it is straightforward to read and easy to understand.
 But there's a problem.
 Our sacred logic of managing notifications is polluted with something we don't have control over.
 Notice, that `UserModule` resides in a different package than `NotificationModule`.
@@ -136,7 +136,8 @@ Everything depends on it!
 But wait.
 Why would `NotificationModule` care about where the user is coming from?
 It just needs some of the user data, and that's it.
-And what if a `User` object is large, but we need only a few attributes from it?
+The concept of the user is important, but not where it comes from.
+And what if a `User` object is large, but we need only a few fields from it?
 Should the new `SmallUser` object be introduced near the `UserModule`?
 Isn't this a circular dependency then?
 `NotificationModule` depends on `UserModule` in code, but `UserModule` depends on `NotificationModule` indirectly
@@ -155,7 +156,7 @@ I wrote such systems.
 
 The root of the problem lies in the dependency **direction**.
 **High-level** `NotificationModule` depends on **low-level** `UserModule`.
-Level in this case means level of abstraction.
+Level in this case means the level of abstraction.
 The further we go from the edge(domain boundary) of the system — the higher we go in terms of abstraction.
 For example, modules that talk to DB are on the edge of the system (the scary network),
 so as modules that send HTTP calls, talk to message brokers, etc.
@@ -350,14 +351,14 @@ We have two options, and two options only:
 
 1. `NotificationModule` depends on `UserModule`.
    We reuse one of the existing public methods from `UserModule` to fetch a `User` object.
-   Then we perform all the necessary transformations we need on a user within the `NotificationModule`,
+   Then we perform all the necessary transformations on a user within the `NotificationModule`,
    and that's it.
    The job's done.
 
    But we're added to the mess.
    `UserModule` now is a bit harder to refactor, because there's one more dependency on it.
    `NotificationModule` now also is not that new.
-   It's referencing huge `User` object left right and center.
+   It's referencing a huge `User` object left right and center.
    It's now the part of the ship.
    Maybe you would like to introduce yet another method to `UserModule` that returns a smaller user?
    And now there's even more mess.
@@ -373,7 +374,7 @@ We have two options, and two options only:
    At least, within our new `NotificationModule`.
    And when someone eventually decides to refactor `UserModule`, all they need to do is keep the interface
    implemented.
-   Not the several dozen of public methods with unknown origins introduced within the last 7 years.
+   Not the several dozens of public methods with unknown origins introduced within the last 7+ years.
    But a single interface that leaves within `NotificationModule` domain.
 
 I don't know about you, but for me `reducing the mess` beats `adding to the mess` any day.
