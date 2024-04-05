@@ -29,7 +29,7 @@ Once I've started inverting the dependencies in my systems, I can't imagine livi
 
 > There are only two hard things in Computer Science: cache invalidation and naming things.
 
-So let's deconstruct the name: **_dependency inversion_**.
+So let's deconstruct the name: **_dependency inversion_**
 
 ### Dependency
 
@@ -41,7 +41,8 @@ It might be a single class, a package, a component, a group of packages, a modul
 web service.
 For example, code that calls the database to fetch a user. There are many possible names for such a thing: domain,
 module, component, package, service, etc.
-Name is not important, as long as it's consistent throughout the discussion. I'll call it **module**.
+Name is not important, as long as it's consistent throughout the discussion.
+I'll call it a **module**.
 A module that queries a user from somewhere (presumably DB) - the `UserModule`.
 That's the first.
 But we need one more.
@@ -275,7 +276,7 @@ Given that we apply the inversion to all dependencies;
 the dependency tree might look like this:
 ![after inversion](assets/04042024-di/post_inversion.png)
 
-Not only the system no longer directly depends on `UserModule`.
+Not only does the system no longer directly depend on `UserModule`.
 But the transitive dependencies are also much more relaxed.
 
 What if `UserModule` grows out of hand?
@@ -312,7 +313,7 @@ idea.
 It's a waste of time.
 For example, Spring Framework (so as pretty much every web framework nowadays) provides amazing capabilities of DI
 (dependency injection, not inversion)
-that enables performing Dependency Inversion almost effortlessly.
+that enable performing Dependency Inversion almost effortlessly.
 Almost.
 
 It requires practice though.
@@ -336,7 +337,7 @@ And it doesn't get enough credit for it.
 
 Let's imagine, the system is not a greenfield.
 Let's imagine, the system is 7+ years old.
-The `UserModule` from above now contains several dozens of public methods and have a dozen of other dependencies.
+The `UserModule` from above now contains several dozens of public methods and has a dozen other dependencies.
 The `User` object contains about 50 fields.
 Half of them are weirdly named booleans.
 There are quite a few complex relationships.
@@ -358,14 +359,14 @@ We have two options, and two options only:
    `NotificationModule` now also is not that new.
    It's referencing huge `User` object left right and center.
    It's now the part of the ship.
-   Maybe you would like to introduce yet another method to `UserModule` that return a smaller user?
+   Maybe you would like to introduce yet another method to `UserModule` that returns a smaller user?
    And now there's even more mess.
 
    How do you think those several dozens of public methods were added?
    Exactly like that.
 2. Inverse dependency.
    We are not going to allow mess into our new `NotificationModule` by any means necessary.
-   Our new module is too innocent to witness the monstrosity `UserModule` became.
+   Our new module is too innocent to witness the monstrosity `UserModule` has become.
    Instead of depending on a mess, we're going to inverse the dependency and make the mess depend on our new
    slick domain-specific interface.
    The mess is still there, but we're not adding to it, which by definition means that we're reducing it.
