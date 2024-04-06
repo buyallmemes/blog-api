@@ -23,27 +23,42 @@ class CommonmarkRenderer implements LocalMDtoHTMLRenderer, GitHubMDtoHTMLRendere
     @Override
     public ParsedMD renderHtml(String mdContent) {
         Node parsed = parser.parse(mdContent);
-        YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
-        parsed.accept(visitor);
-        Map<String, List<String>> frontMatter = visitor.getData();
-        String title = frontMatter.getOrDefault("title", List.of(""))
-                                  .getFirst();
-        String date = frontMatter.getOrDefault("date", List.of(""))
-                                 .getFirst();
+        FrontMatter frontMatter = extractFrontMatter(parsed);
         String html = renderer.render(parsed);
+
+        String title = frontMatter.title();
+        String anchor = buildAnchor(title);
+        String publishingDate = frontMatter.date();
         return ParsedMD.builder()
                        .html(html)
                        .title(title)
-                       .date(date)
-                       .anchor(sanitizeTitle(title))
+                       .date(publishingDate)
+                       .anchor(anchor)
                        .build();
     }
 
-    private String sanitizeTitle(String title) {
+    private FrontMatter extractFrontMatter(Node node) {
+        YamlFrontMatterVisitor visitor = new YamlFrontMatterVisitor();
+        node.accept(visitor);
+        Map<String, List<String>> frontMatter = visitor.getData();
+        String title = extractSimpleAttribute(frontMatter, "title");
+        String date = extractSimpleAttribute(frontMatter, "date");
+        return new FrontMatter(title, date);
+    }
+
+    private String extractSimpleAttribute(Map<String, List<String>> frontMatter, String attributeName) {
+        return frontMatter.getOrDefault(attributeName, List.of(""))
+                          .getFirst();
+    }
+
+    private record FrontMatter(String title, String date) {
+    }
+
+    private String buildAnchor(String title) {
         return title.toLowerCase()
                     .replaceAll("[^a-z0-9\\s-]", "")
                     .replaceAll("[\\s-]+", " ")
                     .trim()
-                    .replaceAll("[\\s]", "-");
+                    .replaceAll("\\s+", "-");
     }
 }

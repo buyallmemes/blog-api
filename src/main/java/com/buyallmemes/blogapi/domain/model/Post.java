@@ -1,4 +1,4 @@
-package com.buyallmemes.blogapi.domain;
+package com.buyallmemes.blogapi.domain.model;
 
 import lombok.Builder;
 import lombok.NonNull;

@@ -1,7 +1,7 @@
 package com.buyallmemes.blogapi.local;
 
-import com.buyallmemes.blogapi.domain.Post;
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
+import com.buyallmemes.blogapi.domain.model.Post;
 import com.buyallmemes.blogapi.local.dependencies.LocalMDtoHTMLRenderer;
 import com.buyallmemes.blogapi.mdparser.ParsedMD;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ class LocalPostRepository implements PostQueryRepository {
     }
 
     private File[] findBlogPostFiles() {
-        return Paths.get("./" + POSTS_PATH)
+        return Paths.get(POSTS_PATH)
                     .normalize()
                     .toAbsolutePath()
                     .toFile()
