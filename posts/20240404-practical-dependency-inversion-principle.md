@@ -169,7 +169,7 @@ in relation to something like Assembly language which is the lowest of them all.
 
 And so the dependency tree might look something like this:
 
-![before inversion](assets/04042024-di/pre_inversion.png)
+![before inversion](assets/20240406-pdip/pre_inversion.png)
 
 Dependency direction goes with the direction of an arrow.
 Everything directly or transitively depends on `UserModule`.
@@ -275,7 +275,7 @@ It abstracts the database on behalf of other modules.
 And so the direction of the dependency between `NotificationModule` and `UserModule` is inverted.
 Given that we apply the inversion to all dependencies;
 the dependency tree might look like this:
-![after inversion](assets/04042024-di/post_inversion.png)
+![after inversion](assets/20240406-pdip/post_inversion.png)
 
 Not only does the system no longer directly depend on `UserModule`.
 But the transitive dependencies are also much more relaxed.
