@@ -97,8 +97,9 @@ The answer was instant — [AWS AppRunner](https://aws.amazon.com/apprunner/).
 The next morning I logged in to AWS AppRunner, and clicked a few buttons:
 
 - create service
-- select an image from private ECR
+- select container registry as a repository type
 - selected a Hello World image from ECR
+- set it to be publicly accessible
 - deploy
 
 And... it worked.
@@ -113,7 +114,7 @@ Thankfully, I know a couple of tricks around DNS.
 A couple of clicks more,
 and now the App Runner will automatically redeploy my backend application as soon
 as a new image version is published to ECR.
-All I need to do is to setup GitHub Action to build and publish images to my ERC registry.
+All I need to do is to setup GitHub Action to build and publish images to ECR.
 Easy.
 
 Once again, no roles, no policies, only profit.
