@@ -255,6 +255,9 @@ COVID? Anyone?
 So yeah, be careful.
 In this case, inversion of dependency could do more harm than good.
 
-And this is exactly why I started with the Tactical Merge.
+
+And this is exactly why I started with the [Tactical Merge](#tactical-merge).
 Although it seems like the most extreme, it guarantees to work.
-Circular dependency will be broken.
+The presence of circular dependency signals a fundamental issue with the design,
+and addressing it only partially might provide temporary relief but won't offer lasting fix.
+

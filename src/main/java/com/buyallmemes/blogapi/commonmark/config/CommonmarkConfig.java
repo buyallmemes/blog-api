@@ -4,7 +4,9 @@ import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
+import org.commonmark.node.Link;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.AttributeProviderFactory;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,9 +32,21 @@ public class CommonmarkConfig {
     }
 
     @Bean
-    HtmlRenderer renderer(List<Extension> commonmarkExtensions) {
-        return HtmlRenderer.builder()
-                           .extensions(commonmarkExtensions)
-                           .build();
+    HtmlRenderer renderer(List<Extension> commonmarkExtensions, List<AttributeProviderFactory> attributeProviderFactories) {
+        HtmlRenderer.Builder builder = HtmlRenderer.builder()
+                                                   .extensions(commonmarkExtensions);
+        attributeProviderFactories.forEach(builder::attributeProviderFactory);
+        return builder.build();
     }
+
+    @Bean
+    AttributeProviderFactory linkTargetBlankProviderFactory() {
+        return context ->
+                (node, tagName, attributes) -> {
+                    if (node instanceof Link) {
+                        attributes.put("target", "_blank");
+                    }
+                };
+    }
+
 }
