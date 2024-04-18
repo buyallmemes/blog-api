@@ -292,7 +292,7 @@ If every module that wants to retrieve a user introduces its user model and an i
 `UserModule` will grow pretty quickly.
 And most of the code will just map a database object into yet another domain object.
 It's not the most exciting code to write or to test.
-`UserModule` is no longer threatened as the module, which everyone has to bow to and respect,
+`UserModule` is no longer treated as the module, which everyone has to bow to and respect,
 but rather the mere mortal boring worker.
 And it works.
 But as I've mentioned before,
