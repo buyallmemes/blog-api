@@ -4,6 +4,7 @@ date: 31.03.2024
 ---
 
 So, the tech.
+
 Oh yes, the most important part — the tech.
 I'm going to use stuff I'm most comfortable with, which happens to be the most widespread tech stack in the world:
 Angular frontend, Java + String backend, and all that on top of AWS.
