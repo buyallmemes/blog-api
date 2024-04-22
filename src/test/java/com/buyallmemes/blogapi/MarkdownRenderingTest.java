@@ -26,4 +26,12 @@ public class MarkdownRenderingTest {
         assertEquals("2021-08-01", actual.date());
         assertEquals("lets-build", actual.anchor());
     }
+
+    @Test
+    void shouldAddTargetBlankToLinks() {
+        String markdown = "[Google](https://www.google.com)";
+        ParsedMD actual = htmlRenderer.renderHtml(markdown);
+        String expected = "<p><a href=\"https://www.google.com\" target=\"_blank\">Google</a></p>\n";
+        assertEquals(expected, actual.html());
+    }
 }

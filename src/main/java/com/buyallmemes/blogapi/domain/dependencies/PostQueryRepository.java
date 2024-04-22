@@ -1,6 +1,6 @@
 package com.buyallmemes.blogapi.domain.dependencies;
 
-import com.buyallmemes.blogapi.domain.Post;
+import com.buyallmemes.blogapi.domain.model.Post;
 
 import java.util.List;
 

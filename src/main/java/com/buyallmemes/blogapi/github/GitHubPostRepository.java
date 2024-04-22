@@ -1,7 +1,7 @@
 package com.buyallmemes.blogapi.github;
 
-import com.buyallmemes.blogapi.domain.Post;
 import com.buyallmemes.blogapi.domain.dependencies.PostQueryRepository;
+import com.buyallmemes.blogapi.domain.model.Post;
 import com.buyallmemes.blogapi.github.dependencies.GitHubMDtoHTMLRenderer;
 import com.buyallmemes.blogapi.mdparser.ParsedMD;
 import lombok.RequiredArgsConstructor;

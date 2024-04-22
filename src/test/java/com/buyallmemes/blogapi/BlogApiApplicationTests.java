@@ -1,6 +1,7 @@
 package com.buyallmemes.blogapi;
 
-import com.buyallmemes.blogapi.domain.Post;
+import com.buyallmemes.blogapi.domain.model.Blog;
+import com.buyallmemes.blogapi.domain.model.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,8 @@ class BlogApiApplicationTests {
 
     @Test
     void shouldReturnBlogPost() {
-        Post[] response = restTemplate.getForObject("/posts", Post[].class);
-        List<Post> posts = List.of(response);
+        Blog blog = restTemplate.getForObject("/posts", Blog.class);
+        List<Post> posts = blog.posts();
         assertTrue(posts.size() > 1);
 
         assertAll(
