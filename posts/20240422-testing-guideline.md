@@ -15,20 +15,20 @@ But I liked it so much, that I think it's worth revisiting and publishing in the
 
 ## Why test?
 
-I think it's mostly clear, but nonetheless I will outline couple of most important reasons.
+I think it's mostly clear, but nonetheless I will outline a couple of most important reasons.
 
 ### We want our software to work
 
 Testing is an essential part of software development that helps ensure that an application works as intended and meets
 the expectations of users.
-Without tests, it's almost impossible to prove, that the functionality does what it supposes to do -
+Without tests, it's almost impossible to prove, that the functionality does what it's supposed to do -
 it's just an educated guess.
 
 ### We want our software to continue working
 
 The true cost of software is in its maintenance.
 Time and money invested into maintenance dwarfs initial development investment.
-And the lager the codebase, the less and less important the initial development investment cost is.
+And the larger the codebase, the less and less important the initial development investment cost is.
 Maintainability should be the main factor when developing software.  
 We’re getting inevitably slower as the code degrades over time.
 Tests enable us to ease the pain of maintenance by turning it into a simple routine activity.  
@@ -110,7 +110,7 @@ There's nothing about a "single line of code," a "single method" or even a "sing
 This is one of the most common misconceptions.
 Somehow "unit" is commonly interpreted as "a method" or even worse — "a line of code."
 And so unit testing becomes method testing, line testing, etc.  
-This is very one-denominational are crude.  
+This is very one-dimensional and crude.  
 Yes, it's important for every method and every line of code to be tested,
 but it should also make sense in the grand schema of things.
 
@@ -140,7 +140,7 @@ I doubt so.
 
 ## Write Effective Unit Tests
 
-Here's my collection of technics and best practices for writing awesome unit tests.
+Here's my collection of techniques and best practices for writing awesome unit tests.
 Don't get me wrong, I haven't invented any of those —
 this is just a collection that I've assembled over time from different sources: be it books, articles, conference talks,
 workshops, etc.
@@ -167,7 +167,7 @@ From my experience,
 every project where tests were treated like a chore or an afterthought had a horrible roting codebase.
 No exceptions.
 And the best codebases I worked with were always backed up by an amazing testing culture amongst developers.
-There's nothing that hurts code base more than a phrase: "I'm finished with implementation, and not I'm writing tests."
+There's nothing that hurts codebase more than a phrase: "I'm finished with implementation, and now I'm writing tests."
 
 And this brings us to the next point...
 
@@ -377,7 +377,7 @@ Follow the AAA pattern (Arrange, Act, Assert)/GWT pattern (Given, When, Then)
 
 ### Have many test classes per production class
 
-Do not feel compelled to stuff all your tests for `FooService` into `FooServiceTest`  
+Do not feel compelled to stuff all your tests for `FooService` into `FooServiceTest`.  
 Every test that needs a slightly different setup should go into a separate test class.  
 It helps to understand what exactly is going on in a test class.
 For example, `FooServiceUserNotFoundExceptionTest` requires little to no explanations.
@@ -394,47 +394,47 @@ Once again, **the best test is the simple test**
 
 ### Test what’s important first
 
-1. Happy paths  
+1. Happy paths.  
    It's a good idea to start with something simple, something satisfying.
 
-2. Code that you fear  
+2. Code that you fear.  
    This should be your primary objective.
    The first test is the hardest to write, and as soon as you crack it -
    everything else will fall apart with ease.
 
-3. Deeply encapsulated logic that is hard to reach via API  
+3. Deeply encapsulated logic that is hard to reach via API.  
    The logic that requires a lot of state management.
    Sometimes it's not possible to test the whole change in isolation,
    and this is where "method by method" tests are becoming useful.
    Don't overdo it.
 
-4. A bug  
+4. A bug.  
    Every time you write a failing test that proves the bug before fixing that bug - you deserve a small salary raise.
    This is what truly differentiates the best from the rest.
    Personally, I found this extremely satisfying to see my failed test prove a bug, just then to be fixed.
    Or even better, a test that should fail — passes, because the initial "bug" assumption was wrong.
-   I can't stress enough how powerful this technic is.
+   I can't stress enough how powerful this technique is.
 
-5. Validation  
+5. Validation.  
    Places with high cyclomatic complexity.  
    `if`, `for`, `while`, etc.
 
-6. Exceptional cases  
+6. Exceptional cases.  
    All your `throws` and `try catch`.
    Test it, but maybe a bit later.
 
-7. Facade methods  
+7. Facade methods.  
    Methods that just call another method or two.
    If you have time - do it.
    What are the chances that someone will accidentally delete one of those calls?
    These methods usually could be tested in a bundle with some other logical parts.
 
-8. Trivial code  
+8. Trivial code.  
    Getters/Setters.
    Not the best way to increase code coverage.
    Same as for the facade methods — your getters/setters/mappers should be tested as part of something more meaningful.
 
-9. Legacy code that never changes with no bugs  
+9. Legacy code that never changes with no bugs.  
    If it works — don’t touch it.
    Leave it be.
    Find something better to do.
@@ -449,7 +449,7 @@ Don’t strive to have high code coverage for the manager's sake.
 #### Strive to have meaningful tests that you trust with your life
 
 [Pareto principle](https://en.wikipedia.org/wiki/Pareto_principle) applies to tests quite well.
-80% coverage could be archived by spending just a little bit of effort.
+80% coverage could be achieved by spending just a little bit of effort.
 The last 20% of coverage will take you approximately four times as much.
 
 ![](assets/20240406-tg/image-20230331-114754.png)
@@ -865,7 +865,7 @@ A simple browser search will reveal all the necessary information.
       assertEquals("Hello"+expectedPersonName, actualGreeting);
     ```
 
-    Even the simplest logic, like string concatenation, can produce errors.
+    Even the simplest logic, like strings concatenation, can produce errors.
     Have you noticed the missing (space) after “Hello”?
     Users will notice.  
     **Good:**
@@ -995,7 +995,7 @@ Thankfully, this practice is adopted quite well these days.
 If something is even 1% over your comfort zone - ask for help.
 
 I can't stress enough importance of pair programming.
-I pity the teams and organisations that see this as "waste of time."
+I pity the teams and organizations that see this as a "waste of time."
 
 Two heads are better than one.
 
@@ -1008,7 +1008,7 @@ Let me quote Kent Beck here:
 
 ### Test-first
 
-Don’t even put code in visible sight unless it has a reasonably good unit test suite.
+Don’t ever put code in visible sight unless it has a reasonably good unit test suite.
 
 Nothing screams "mess" louder than "I finished the development, now I will write some tests."
 
@@ -1018,7 +1018,7 @@ Nothing screams "mess" louder than "I finished the development, now I will write
 
 * [https://amzn.eu/d/4riNe3l](https://amzn.eu/d/4riNe3l)
 
-# Write Effective Microservice Integration Tests
+# Test microservices effectively
 
 ![](assets/20240406-tg/image-20230327-134922.png)
 
