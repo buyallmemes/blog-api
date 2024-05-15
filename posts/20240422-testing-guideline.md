@@ -46,8 +46,8 @@ Think about this next time you will spend hours coding.
 
 Speaking in financial terms:
 **code is a liability** — it is something that requires more and more investments over time to keep it working.
-The more code there is, the more maintenance, bug fixing, and refactoring it requires.  
-On the other hand, test suite is your asset — it is something that helps to deal with the liability.
+The larger the codebase, the more maintenance, bug fixing, and refactoring it requires.  
+On the other hand, **test suite is your asset** — it is something that helps to deal with the liability.
 Well-written test suite will continuously pay its dividends.  
 And if financial gurus are teaching us something,
 is that we should invest (time and money) in assets, and not liabilities.
@@ -143,7 +143,7 @@ I doubt so.
 Here's my collection of techniques and best practices for writing awesome unit tests.
 Don't get me wrong, I haven't invented any of those —
 this is just a collection that I've assembled over time from different sources: be it books, articles, conference talks,
-workshops, etc.
+workshops, and my colleagues.
 
 However, all this stuff is battle tested.
 There's not a single technique that I don't use daily.
@@ -190,7 +190,7 @@ TDD is hard.
 But writing unit tests early is not.
 How early?
 As early as possible.
-Ideally, first 😉  
+Ideally, first 😉.  
 Write a little bit of code, then write a little bit of test, then write a little bit of code, etc.
 As soon as you feel comfortable, skip the first step.
 
@@ -289,7 +289,7 @@ The "stronger" the programmer, the more he/she relies on adequate test suite to 
 beginning.
 
 I've been guilty of refactoring without tests in the past.
-It was a dreadful experience.
+It's a dreadful experience.
 
 ### Keep your tests clean
 
@@ -469,7 +469,7 @@ you end up with non-deterministic results.
 
 * No `while(...){...}`
 
-Keep these technics for integration tests.
+Keep these techniques for integration tests.
 
 Actively look for slow unit tests and investigate.
 The usual suspects are Reflection and his best friend Mockin Static.
@@ -543,7 +543,7 @@ I like to keep my unit tests simple, fast and away from the network.
 
 ### Use mocking judiciously
 
-* Mock behavior, not data  
+* Mock behavior, not data.  
   **Bad:**
 
   ```java
@@ -568,19 +568,19 @@ I like to keep my unit tests simple, fast and away from the network.
                                  .build();     //ugly target class is encapsulated
   ```
 
-* Don't Mock Getters  
+* Don't Mock Getters.  
   Just don’t.
 
-* Don't have Mocks return Mocks  
+* Don't have Mocks return Mocks.  
   Every time you do that, a fairy dies 🧚😢
 
-* Overuse of mocks leads to brittle tests and code that is difficult to maintain
+* Overuse of mocks leads to brittle tests and code that is difficult to maintain.
 
 It is perfectly fine to use _real classes_ instead of mocked interfaces.  
 Mocked interfaces are hard to change - every API change will break **ALL** tests.
 Do yourself a favor, and don't solidify interfaces between components prematurely.
 This is especially true in the early stages of development.
-Mock a bit further from the class you are testing, and leave yourself room to wiggle.
+Mock a bit further from the class you are testing, and leave yourself a room to wiggle.
 Or even better - start with a small integration test.
 
 Assuming we have something like:
@@ -844,9 +844,9 @@ A simple browser search will reveal all the necessary information.
 
 ### Eliminate everything that makes input and output unclear
 
-* Never generate random input
+* Never generate random input.
 
-* Don’t use named constants from the production code  
+* Don’t use named constants from the production code.  
   What if there’s a type-o?  
   Prefer literal strings and numbers, even when it means duplication.
 
@@ -920,7 +920,7 @@ A simple browser search will reveal all the necessary information.
   Even the simplest predefined message is much better than `AssertionFailedError: Expected 1 Actual 2`.
   Good luck deciphering that in three months.
 
-You want your test to convey you a story about what is going on with the systems.
+You want your test to convey you a story about what is going on with the system.
 Just enough to spot the issue when it occurs.
 
 ### See your tests fail at least once
