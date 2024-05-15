@@ -9,55 +9,80 @@ Although it was super exciting to write,
 and I tied to promote it internally to the best of my ability,
 it turned out to be yet another cold documentation.
 
-I liked it so much, in fact, that I think it's worth revisiting and publishing in the open.
+But I liked it so much, that I think it's worth revisiting and publishing in the open.
 
 # Testing
+
+## Why test?
+
+I think it's mostly clear, but nonetheless I will outline couple of most important reasons.
+
+### We want our software to work
 
 Testing is an essential part of software development that helps ensure that an application works as intended and meets
 the expectations of users.
 Without tests, it's almost impossible to prove, that the functionality does what it supposes to do -
 it's just an educated guess.
 
-We read code at least 10x more times than we write.
-Something written in 5 minutes will be read for an hour.
-Think about this next time you will spend hours coding.
-Tests help write much more readable code — they shift attention from
-implementation details to behavior, usability, and user-friendliness,
-which ends up in much more simple code.
-Don’t confuse this with "easy."
-Writing good tests and good code is not easy.
-It requires practice.
-Constant practice.
+### We want our software to continue working
 
 The true cost of software is in its maintenance.
+Time and money invested into maintenance dwarfs initial development investment.
+And the lager the codebase, the less and less important the initial development investment cost is.
+Maintainability should be the main factor when developing software.  
 We’re getting inevitably slower as the code degrades over time.
-Tests enable us to ease the pain of maintenance by turning it into a simple routine activity.
+Tests enable us to ease the pain of maintenance by turning it into a simple routine activity.  
 Well-written tests enable change.
 They enable options.
 
-Speaking in financial terms: your code is a liability, and your test suite is your assets.
+### People interaction
+
+Counterintuitively, tests help with readability.
+They shift attention from implementation details to behavior, usability, and user-friendliness,
+which ends up in much more simple code.
+We spend 10x more time reading code when writing.
+Something written in ~5 minutes will be read for an hour.
+Think about this next time you will spend hours coding.
+
+Speaking in financial terms:
+**code is a liability** — it is something that requires more and more investments over time to keep it working.
+The more code there is, the more maintenance, bug fixing, and refactoring it requires.  
+On the other hand, test suite is your asset — it is something that helps to deal with the liability.
+Well-written test suite will continuously pay its dividends.  
+And if financial gurus are teaching us something,
+is that we should invest (time and money) in assets, and not liabilities.
 
 Tests are never obsolete, they act as a living specification forever.
 
-So let's go through the most important aspects of writing awesome test one-by-one.
+Don’t confuse anything of that with "easy."
+Writing good tests and good code is not easy.
+It requires discipline and practice.
+Constant practice.
+
+So let's go through the most important aspects that I picked up over the years of writing awesome tests one-by-one.
 
 # Understand the Classic Testing Pyramid
 
 It's all starts with the testing pyramid —
 a testing strategy that emphasizes the importance of having a balanced mix of different types of tests.
-There are three main types of test: unit tests, integration tests, and end-to-end tests.
+There are many types of tests, but they could be categorized into three groups:
+
+* unit tests
+* integration tests
+* end-to-end tests
+
 The aim is to have a higher percentage of unit tests and a lower percentage of end-to-end tests to ensure faster
 feedback loops and more robust code.
 
 ![](assets/20240406-tg/image-20230327-114635.png)
 
-*$$$ - expensive tests, a lot of machinery and time are involved*
+*$$$ — expensive tests, a lot of machinery and time are involved*
 
-*$ - cheap tests, very little resources and time are required*
+*$ — cheap tests, very little resources and time are required*
 
-In this article, I will mainly focus on unit test with sprinkles of integration test.
+In this article, I will mainly focus on unit tests with sprinkles of integration tests.
 
-### **References**
+#### References
 
 * [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
 
@@ -80,24 +105,24 @@ How about this?
 > It is a standard step in development and implementation approaches such as
 > Agile."- https://en.wikipedia.org/wiki/Unit_testing
 
-Noticed anything strange?
-There's nothing about a "single line of code", a "single method" or even a "single class".
+Noticed anything?  
+There's nothing about a "single line of code," a "single method" or even a "single class."  
 This is one of the most common misconceptions.
-Somehow "unit" is always interpreted as "a method" or even worse — "a line of code".
-And so unit testing becomes method testing, line testing, etc.
-This is very one-denominational are crude.
+Somehow "unit" is commonly interpreted as "a method" or even worse — "a line of code."
+And so unit testing becomes method testing, line testing, etc.  
+This is very one-denominational are crude.  
 Yes, it's important for every method and every line of code to be tested,
 but it should also make sense in the grand schema of things.
 
 Allow me to elaborate.
-If I'm building the change (whatever it might be: feature, bugfix, etc.), what is more important?
+If I'm introducing a change (whatever it might be: feature, bugfix, etc.), what is more important?
 
 - for the change to work
 - for some method to return the right value
 
-Well, the answer is evident —
+Well, the answer is clear —
 it's always more important for the whole **change** to work than for method to return the right value.
-Code can have mistakes, but if the change perform as it should - are these really mistakes?
+Code can have mistakes, but if the change performs as it should - who cares?
 This is because the change is the unit in this case.
 Not a method or a line of code.
 Code is just an implementation detail of this change.
@@ -113,17 +138,27 @@ But will the satisfaction be the same if instead of a pirate ship,
 you receive just a bunch of working bricks?
 I doubt so.
 
-I hope I made myself clear.
-
 ## Write Effective Unit Tests
 
 Here's my collection of technics and best practices for writing awesome unit tests.
-There are going to be quite a few code snippets, they all will be in Java, for obvious reasons 😏.
+Don't get me wrong, I haven't invented any of those —
+this is just a collection that I've assembled over time from different sources: be it books, articles, conference talks,
+workshops, etc.
+
+However, all this stuff is battle tested.
+There's not a single technique that I don't use daily.
+If anything, there might be more.
+
+Some of these points are asymptotes —
+they are hardly reachable 100% of the time, and it's fine, as long as there's a consistent upward trend.
+
+There are going to be quite a few code snippets, they all will be in **Java** with some sprinkles of **Spring**, for
+obvious reasons 😏.
 
 ### Listen to your unit tests
 
-Your unit tests are trying to tell you something.
-They are your best allies.
+Your unit tests are trying to tell you something, and if you want your code to be awesome, you have to listen.
+They are your best allies.  
 “If tests are hard to write, the production design is crappy” - goes an old saying.
 Indeed, writing unit tests gives one of the most comprehensive,
 yet brutal feedback about the design of the system.
@@ -132,8 +167,34 @@ From my experience,
 every project where tests were treated like a chore or an afterthought had a horrible roting codebase.
 No exceptions.
 And the best codebases I worked with were always backed up by an amazing testing culture amongst developers.
+There's nothing that hurts code base more than a phrase: "I'm finished with implementation, and not I'm writing tests."
 
-#### Testable Design is Good Design
+And this brings us to the next point...
+
+### Write unit tests early
+
+Writing fine-grained unit tests early increases friction with bad design,
+helps to understand the problem and clarify business requirements early in development,
+gives early design feedback, and produces real test coverage.
+
+Unit tests force writer to think about a piece of code from the user’s perspective.
+This coerces a cleaner and more effective design.
+
+Writing unit tests after the implementation is done is practically useless.
+All mistakes are already made.
+Bad design decisions as well.
+Unit tests will just "solidify" everything, and harm more than help.
+
+I'm not preaching about TDD.
+TDD is hard.
+But writing unit tests early is not.
+How early?
+As early as possible.
+Ideally, first 😉  
+Write a little bit of code, then write a little bit of test, then write a little bit of code, etc.
+As soon as you feel comfortable, skip the first step.
+
+### Testable Design is Good Design
 
 ![](assets/20240406-tg/image-20230328-072454.png)
 
@@ -144,31 +205,32 @@ than one mega-class with ten dependencies.
 The ideal number of dependencies per class is zero, but this is hardly possible,
 but the intention to have as few dependencies per class as possible should drive the design.
 
-#### Testing simplification is a great reason to refactor production code
+#### **Testing simplification is a great reason to refactor production code**
 
-I once heard a phrase from a seasoned dev: "Changing production code because of a test is a bad practice!" —
+I once heard a phrase from a seasoned dev: "Changing production code because of tests is a bad practice!" —
 it goes without saying that the project codebase was one of the worst I ever worked with till this day.
 
 The pinnacle of this project for me was a 4-week sprint,
 during which my team was extremely busy, but managed to produce so little output,
-that during the monthly project demo, all we have to show for it was a small green text on a couple of pages.  
+that during the monthly project demo, all we have to show for it was a small green text on a couple of web pages.  
 And nobody was laughing, because other teams(~15 in total) managed to produce even less.
-A couple of months later, the project with a 20mil euro a year budget was canceled after 3.5 years of development.
+A couple of months later, the project with a 20mil euro a year budget was canceled after approximately 4 years of
+development.
 The project was a massive failure.
 
 It was probably mismanaged all over the place,
 yes, but poor and unprofessional engineering "ship-shit-fast" culture didn't help,
 that's for sure.
-Over 3.5 years, more than a hundred of engineers(myself included) produced nothing but a raw unmaintainable mess,
+Over 4 years, more than a hundred of engineers(myself included) produced nothing but a raw unmaintainable mess,
 that inevitably ground development to a halt.
 
 But I've learned a lot.
-No matter how many hours I put into my working week, the ever-growing mess will always outpace me.
+No matter how many hours I and my team put into a working week, the ever-growing mess will always outpace us.
 And the only way to move fast is to move with ever-increasing quality.
 And the only way to achieve ever-increasing quality is to mercilessly refactor existing code.
-And the only way to enable refactoring is to have a superstrong test suite.
+And the only way to enable refactoring is to have rigorous testing ethics.
 
-Moral of the story: good tests equal fast development.
+**Moral of the story: good tests equal fast development.**
 
 ### Test behavior, not implementation
 
@@ -179,7 +241,7 @@ This took me too long to realize.
 #### Implementation changes should not break tests
 
 If I want to perform some minor refactoring(tidying),
-like rearrange methods, classes, extract new interfaces - something that keeps the behaviour the same,
+like rearrange methods, classes, extract new interfaces - something that keeps the behavior the same,
 I should be able to do it without breaking tests.
 This is impossible if tests are written to test implementation (each method/line of code).
 
@@ -191,7 +253,7 @@ The whole domain is a unit.
 Assuming I have something like this:
 
 ```bash
-├── test
+├── buyallmemes
 │   ├── notification
 │   │   ├── NotificationUser.java
 │   │   ├── NotificationUserRetriever.java
@@ -207,7 +269,7 @@ Assuming I have something like this:
 There are several possibilities to scope tests:
 
 - go by the "book" and test each class/method on its own mocking everything else
-- scope tests around `NotificationModule` and mock only external dependencies
+- scope tests around whole `NotificationModule` and mock only external dependencies
 
 This way, dependencies within the scope could be refactored.
 It's much more flexible.
@@ -223,9 +285,8 @@ Untested code cannot be adequately refactored.
 
 And nobody writes clean code from scratch.
 Not even the “strongest” programmers.
-First, they write a small bit of dirty messy code to test a theory,
-and then they refactor their code,
-because "strong" programmers have an adequate test suite to support their messy code from the beginning.
+The "stronger" the programmer, the more he/she relies on adequate test suite to support their messy code from the
+beginning.
 
 I've been guilty of refactoring without tests in the past.
 It was a dreadful experience.
@@ -237,19 +298,16 @@ The code will inevitably change, it will evolve, and the only thing that will ho
 
 Try to avoid any “crafty” approaches.
 Settle for standard tools and practices.
-The best test is the simple test.  
-**And stay away from reflection.**
 
-Tools like **PowerMock**,
-**ReflectionUtils** are a solid sign that something is fundamentally wrong with the code design.
-Unless you are building a reflection-based framework of some sort, there should be no need for such tools.
+#### The best test is the simple test
 
 **Bad:**
 
-```
+```java
+
 @BeforeEach
-void setUp(){
-  MockitoAnnotations.openMocks(this);
+void setUp() {
+    MockitoAnnotations.openMocks(this);
 }
 ```
 
@@ -257,9 +315,10 @@ Deceiving. Hide unnecessary stubbing. Don’t do it.
 
 **Good:**
 
-```
+```java
+
 @ExtendWith(MockitoExtension.class)
-class WonderfulServiceTest{
+class WonderfulServiceTest {
 ...
 }
 ```
@@ -269,7 +328,7 @@ thing).
 
 **Bad:**
 
-```
+```java
 private SystemUnderTest underTest;
 
 @Mock
@@ -283,7 +342,8 @@ void beforeEach() {
 
 **Good:**
 
-```
+```java
+
 @InjectMocks
 private SystemUnderTest underTest;
 
@@ -296,7 +356,13 @@ Clean. Less boilerplate code.
 Messy unit tests possess much greater risk than the absence of tests.
 They create fake coverage and mislead into an idea that the code is working.
 
-#### Review and refactor tests regularly
+**And stay away from reflection.**
+
+In Java world, tools like **PowerMock**,
+**ReflectionUtils** are a solid sign that something is fundamentally wrong with the code design.
+Unless you are building a reflection-based framework of some sort, there should be no need for such tools.
+
+### Review and refactor tests regularly
 
 Just like production code, tests should be reviewed and refactored to
 ensure that they are still valid and maintainable.
@@ -309,12 +375,29 @@ Follow the AAA pattern (Arrange, Act, Assert)/GWT pattern (Given, When, Then)
 
 ![](assets/20240406-tg/image-20230327-122231.png)
 
+### Have many test classes per production class
+
+Do not feel compelled to stuff all your tests for `FooService` into `FooServiceTest`  
+Every test that needs a slightly different setup should go into a separate test class.  
+It helps to understand what exactly is going on in a test class.
+For example, `FooServiceUserNotFoundExceptionTest` requires little to no explanations.
+
+* Not sure about where to put new tests? Create a new class.
+
+* The test class is getting too big and requires a lot of doom-scrolling?
+  Split it into several test classes.
+  This is also a good indicator that class under the test is too big with too many responsibilities.
+  Refactor it.
+  Split it into smaller pieces.
+
+Once again, **the best test is the simple test**
+
 ### Test what’s important first
 
-1. Happy paths
+1. Happy paths  
    It's a good idea to start with something simple, something satisfying.
 
-2. Code that you fear   
+2. Code that you fear  
    This should be your primary objective.
    The first test is the hardest to write, and as soon as you crack it -
    everything else will fall apart with ease.
@@ -332,7 +415,7 @@ Follow the AAA pattern (Arrange, Act, Assert)/GWT pattern (Given, When, Then)
    Or even better, a test that should fail — passes, because the initial "bug" assumption was wrong.
    I can't stress enough how powerful this technic is.
 
-5. Validation
+5. Validation  
    Places with high cyclomatic complexity.  
    `if`, `for`, `while`, etc.
 
@@ -340,25 +423,25 @@ Follow the AAA pattern (Arrange, Act, Assert)/GWT pattern (Given, When, Then)
    All your `throws` and `try catch`.
    Test it, but maybe a bit later.
 
-7. Facade methods
-   Methods that just call another method or two.  
+7. Facade methods  
+   Methods that just call another method or two.
    If you have time - do it.
    What are the chances that someone will accidentally delete one of those calls?
    These methods usually could be tested in a bundle with some other logical parts.
 
-8. Trivial code
-   Getters/Setters.  
+8. Trivial code  
+   Getters/Setters.
    Not the best way to increase code coverage.
    Same as for the facade methods — your getters/setters/mappers should be tested as part of something more meaningful.
 
-9. Legacy code that never changes with no bugs
+9. Legacy code that never changes with no bugs  
    If it works — don’t touch it.
    Leave it be.
    Find something better to do.
 
-Don’t start testing by passing `null` and empty collections.
-Don’t start testing with extremely rare edge cases.
-Focus on what’s important first.
+Don’t start testing by passing `null` and empty collections.  
+Don’t start testing with extremely rare edge cases.  
+Focus on what’s important first.  
 Use code coverage to detect missed paths.
 
 Don’t strive to have high code coverage for the manager's sake.
@@ -367,7 +450,7 @@ Don’t strive to have high code coverage for the manager's sake.
 
 [Pareto principle](https://en.wikipedia.org/wiki/Pareto_principle) applies to tests quite well.
 80% coverage could be archived by spending just a little bit of effort.
-The last 20% of coverage will take you four times as much.
+The last 20% of coverage will take you approximately four times as much.
 
 ![](assets/20240406-tg/image-20230331-114754.png)
 
@@ -387,6 +470,7 @@ you end up with non-deterministic results.
 * No `while(...){...}`
 
 Keep these technics for integration tests.
+
 Actively look for slow unit tests and investigate.
 The usual suspects are Reflection and his best friend Mockin Static.
 To fight with the `static` disease - convert `static` methods into small instanced components.
@@ -470,7 +554,7 @@ I like to keep my unit tests simple, fast and away from the network.
   I'm seeing this all the time, and every single time my reaction is "Why?"
   After all these years, I still don't understand.
   I probably missed a memo or something.
-  There is probably a beautiful builder pattern hidden somewhere.
+  In most cases, there's a beautiful builder pattern hidden somewhere.
   Use it.
   There’s none?
   Add a builder pattern and use it.
@@ -492,119 +576,90 @@ I like to keep my unit tests simple, fast and away from the network.
 
 * Overuse of mocks leads to brittle tests and code that is difficult to maintain
 
-* It is perfectly fine to use _real_ classes instead of mocked interfaces.  
-  Mocked interfaces are hard to change - every API change will break **ALL** tests.
-  Do yourself a favor, and don't solidify interfaces between components prematurely.
-  This is especially true in the early stages of development.
-  Mock a bit further from the class you are testing, and leave yourself room to wiggle.
-  Or even better - start with an integration test.
+It is perfectly fine to use _real classes_ instead of mocked interfaces.  
+Mocked interfaces are hard to change - every API change will break **ALL** tests.
+Do yourself a favor, and don't solidify interfaces between components prematurely.
+This is especially true in the early stages of development.
+Mock a bit further from the class you are testing, and leave yourself room to wiggle.
+Or even better - start with a small integration test.
 
-  Assuming we have something like:
-
-  ```java
-  @RequiredArgsConstructor
-  class A {
-      private final B b;
-  
-      public String getSomething() {
-          return b.computeSomething();
-      }
-  }
-  
-  @RequiredArgsConstructor
-  class B {
-      private final CRepository cRepository;
-  
-      public String computeSomething() {
-          return cRepository.getSomething() + " World!";
-      }
-  }
-  
-  class CRepository {
-      // represention of a database
-      public String getSomething() {
-          return "Hello";
-      }
-  }
-  ```
-
-  Class **A** injects class **B**, class **B** injects class **CRepository**. Nothing crazy.
-
-  **Might be too fragile:**
+Assuming we have something like:
 
   ```java
-  @ExtendWith(MockitoExtension.class)
-  public class ATest {
-  
-      @InjectMocks
-      private A a;
-      
-      @Mock
-      private B b;
-  
-      @Test
-      void test() {
-          when(b.computeSomething()).thenReturn("Hello World!");
-          String actual = a.getSomething();
-          assertEquals("Hello World!", actual);
-      }
-  }
+
+@RequiredArgsConstructor
+class A {
+    private final B b;
+
+    public String getSomething() {
+        return b.computeSomething();
+    }
+}
+
+@RequiredArgsConstructor
+class B {
+    private final CRepository cRepository;
+
+    public String computeSomething() {
+        return cRepository.getSomething() + " World!";
+    }
+}
+
+class CRepository {
+    // represention of a database
+    public String getSomething() {
+        return "Hello";
+    }
+}
   ```
 
-  The interface between **A** and **B** is effectively locked.
-  The only change we can do without breaking the test is renaming via IDE.
-  It's useful, but nothing spectacular.
+Class **A** injects class **B**, class **B** injects class **CRepository**. Nothing crazy.
 
-  **Might be more elastic:**
-
-  ```java
-  @ExtendWith(MockitoExtension.class)
-  public class ATest {
-      
-      private A a;
-      
-      @InjectMocks
-      private B b;
-      
-      @Mock
-      private CRepository cRepository;
-  
-      @BeforeEach
-      void setUp() {
-          a = new A(b); //real implementation of B is injected
-      }
-      
-      @Test
-      void test() {
-          when(cRepository.getSomething()).thenReturn("Hello");
-          String actual = a.getSomething();
-          assertEquals("Hello World!", actual);
-      }
-  }
-  ```
-
-  The interface between **A** and **B** could be freely changed in any direction.
-  Much more flexible approach.
-  But this does not mean that interface of the **B** should always be fluent.
-  As soon as the API of class **B** is getting more mature (ready to be merged into mainline) it _might_ makes sense to
-  “solidify” it by adding **more** unit tests.
-
-If you're using a framework with a dependency injection mechanism,
-you probably can specify the set of dependencies to include in test.
-
-This is how Spring does it:
+**Might be too fragile:**
 
 ```java
 
-@ExtendWith(SpringExtension.class) // Enables Spring to take control over the test execution
-@Import({A.class, B.class}) //classes that will be included into the test Spring Context
+@ExtendWith(MockitoExtension.class)
 public class ATest {
 
-    @Autowire
-    private A a; //A will be instantiated by Spring
-    //B will be injected automatically
-    @MockBean
-    private CRepository cRepository; //Mock of CRepository will be injected into B
+    @InjectMocks
+    private A a;
+
+    @Mock
+    private B b;
+
+    @Test
+    void test() {
+        when(b.computeSomething()).thenReturn("Hello World!");
+        String actual = a.getSomething();
+        assertEquals("Hello World!", actual);
+    }
+}
+```
+
+The interface between **A** and **B** is effectively locked.
+The only change we can do without breaking the test is renaming via IDE.
+It's useful, but nothing spectacular.
+
+**Might be more elastic:**
+
+```java
+
+@ExtendWith(MockitoExtension.class)
+public class ATest {
+
+    private A a;
+
+    @InjectMocks
+    private B b;
+
+    @Mock
+    private CRepository cRepository;
+
+    @BeforeEach
+    void setUp() {
+        a = new A(b); //real implementation of B is injected
+    }
 
     @Test
     void test() {
@@ -613,6 +668,35 @@ public class ATest {
         assertEquals("Hello World!", actual);
     }
 }
+```
+
+The interface between **A** and **B** could be freely changed in any direction.
+Much more flexible approach.
+But this does not mean that interface of the **B** should always be fluent.
+As soon as the API of class **B** is getting more mature (ready to be merged into mainline) it _might_ makes sense to
+“solidify” it by adding **more** unit tests.
+If you're using a framework with a dependency injection mechanism, you probably can specify the set of dependencies to
+include in test.  
+This is how Spring does it:  
+```java
+
+    @ExtendWith(SpringExtension.class) // Enables Spring to take control over the test execution
+    @Import({A.class, B.class}) //classes that will be included into the test Spring Context
+    public class ATest {
+    
+        @Autowire
+        private A a; //A will be instantiated by Spring
+        //B will be injected automatically
+        @MockBean
+        private CRepository cRepository; //Mock of CRepository will be injected into B
+    
+        @Test
+        void test() {
+            when(cRepository.getSomething()).thenReturn("Hello");
+            String actual = a.getSomething();
+            assertEquals("Hello World!", actual);
+        }
+    }
 ```
 
 But be careful, you're still locking quite a bit of components together.
@@ -741,25 +825,10 @@ void testNamesNotEmpty() {
 For each `@Test` new instance of a test class is created,
 therefore instance variable `List<String> names` will not be shared.
 
-### Have many test classes per production class
-
-Do not feel compelled to stuff all your tests for `FooService` into `FooServiceTest`  
-Every test that needs a slightly different setup should go into a separate test class.  
-It helps understand what exactly going on in a test class.
-For example, `FooServiceUserNotFoundExceptionTest` requires little to no explanations.
-
-* Not sure about where to put new tests? Create a new class.
-
-* The test class is getting too big and requires a lot of doom-scrolling?
-  Split it into several test classes.
-  This is also a good indicator that class under the test is too big with too many responsibilities.
-  Refactor it.
-  Split it into smaller pieces.
-
 ### Control the output of your tests
 
-Green test should produce no output.  
-Red test should produce just enough clear output.
+<span style="color:green">Green</span> test should produce no output.  
+<span style="color:red">Red</span> test should produce just enough clear output.
 
 **Bad and absolutely useless log:**
 
@@ -773,35 +842,11 @@ Good luck finding anything there.
 
 A simple browser search will reveal all the necessary information.
 
-### Write unit tests early
-
-Writing fine-grained unit tests early increases friction with bad design,
-helps to understand the problem and clarify business requirements early in development,
-gives early design feedback, and produces real test coverage.
-
-Unit tests force writer to think about a piece of code from the user’s perspective.
-This coerces a cleaner and more effective design.
-
-Writing unit tests after the implementation is done is practically useless.
-All mistakes are already made.
-Bad design decisions as well.
-Unit tests will just "solidify" everything.
-
-I'm not preaching about TDD.
-TDD is hard.
-But writing unit tests early is not.
-How early?
-As early as possible.
-Ideally, first 😉
-
-Write a little bit of code, then write a little bit of test, then write a little bit of code, etc.
-As soon as you feel comfortable, skip the first step.
-
 ### Eliminate everything that makes input and output unclear
 
 * Never generate random input
 
-* Don’t use named constants from the production code.
+* Don’t use named constants from the production code  
   What if there’s a type-o?  
   Prefer literal strings and numbers, even when it means duplication.
 
@@ -816,21 +861,21 @@ As soon as you feel comfortable, skip the first step.
 
   **Bad:**
 
-```java
-  assertEquals("Hello"+expectedPersonName, actualGreeting);
-```
+    ```java
+      assertEquals("Hello"+expectedPersonName, actualGreeting);
+    ```
 
-Even the simplest logic, like string concatenation, can produce errors.
-Have you noticed the missing (space) after “Hello”?
-Users will notice.  
-**Good:**
-
-```java
-  assertEquals("Hello John Doe",actualGreeting);
-```
-
-Leave no room for errors.
-At least, in unit tests.
+    Even the simplest logic, like string concatenation, can produce errors.
+    Have you noticed the missing (space) after “Hello”?
+    Users will notice.  
+    **Good:**
+    
+    ```java
+      assertEquals("Hello John Doe",actualGreeting);
+    ```
+    
+    Leave no room for errors.
+    At least, in unit tests.
 
 * Be mindful of what is actually going on behind `assertEquals()`  
   It is not the best suitable to test collections.
@@ -870,8 +915,7 @@ At least, in unit tests.
   Although the test itself is starting to look rather ugly.
 
 * Use the assert message parameter to help future you understand what exactly is going on.  
-  `assertEquals(expected.getId(), actual.getId(), "User Id")` ← every `assert..` method actually has n+1 parameters,
-  but everyone uses an overloaded version.
+  `assertEquals(expected.getId(), actual.getId(), "User Id")` ← every `assert..` method actually has n+1 parameters.
   It accepts not only a `String` but also a `Supplier<String>`.
   Even the simplest predefined message is much better than `AssertionFailedError: Expected 1 Actual 2`.
   Good luck deciphering that in three months.
@@ -890,6 +934,32 @@ It virtually takes no time, and comforts you during the production deployment.
 The earlier you write unit tests, the simpler this could be achieved.
 It's tough to write failing unit tests for already written code.
 
+### Practice Parameterized Testing
+
+[Parameterized testing](https://www.baeldung.com/parameterized-tests-junit-5) is a technique used to run the same test method with different input parameters.
+This helps reduce code duplication and ensures that the code works as expected with different inputs.
+Practice parameterized testing to improve the efficiency of tests and increase test coverage.
+
+Testing a validation rules?
+Parametrized test probably is a good idea.
+
+### Use Architectural Testing
+
+[Architectural testing](https://www.archunit.org/) is a technique used to verify that the code follows certain architectural rules and constraints.
+It should be used to ensure that the code is scalable, maintainable, and follows best practices.
+
+Architectural tests are extremely useful for preserving(or forcing) project structure.
+
+For example:
+
+* prevent accessing classes in certain package from another class in another package
+  (a.k.a. don't inject repository into controller)
+
+* forbid accessing internal implementation of the module directly, and force usage of the API layer
+
+Overall, architectural tests should be quite deep in your toolbox.
+Don’t just wave it left and right.
+
 ### References
 
 * [https://www.baeldung.com/java-unit-testing-best-practices](https://www.baeldung.com/java-unit-testing-best-practices)
@@ -906,18 +976,9 @@ It's tough to write failing unit tests for already written code.
 
 * [https://en.wikipedia.org/wiki/Mutation\_testing](https://en.wikipedia.org/wiki/Mutation_testing)
 
-# Practice Parameterized Testing
-
-Parameterized testing is a technique used to run the same test method with different input parameters.
-This helps reduce code duplication and ensures that the code works as expected with different inputs.
-Practice parameterized testing to improve the efficiency of tests and increase test coverage.
-
-Testing a validation rules?
-Parametrized test probably is a good idea.
-
-### References
-
 * [Parameterized Tests with JUnit 5](https://www.baeldung.com/parameterized-tests-junit-5)
+
+* [ArchUnit](https://www.archunit.org/)
 
 # Follow Extreme Programming Practices
 
@@ -957,40 +1018,19 @@ Nothing screams "mess" louder than "I finished the development, now I will write
 
 * [https://amzn.eu/d/4riNe3l](https://amzn.eu/d/4riNe3l)
 
-# Use Architectural Testing
-
-Architectural testing is a technique used to verify that the code follows certain architectural rules and constraints.
-It should be used to ensure that the code is scalable, maintainable, and follows best practices.
-
-Architectural tests are extremely useful for preserving(or forcing) project structure.
-
-For example:
-
-* prevent accessing classes in certain package from another class in another package
-  (a.k.a. don't inject repository into controller)
-
-* forbid accessing internal implementation of the module directly, and force usage of the API layer
-
-Overall, architectural tests should be quite deep in your toolbox.
-Don’t just wave it left and right.
-
-### References
-
-* [ArchUnit](https://www.archunit.org/)
-
 # Write Effective Microservice Integration Tests
 
 ![](assets/20240406-tg/image-20230327-134922.png)
 
-There's a reason why I labeled test pyramid in the beginning of the article as "classic."
+There's a reason why I labeled test pyramid at the beginning of the article as "classic."
 I wanted to avoid "monolithic."
-But it's true, classic test pyramid was introduced in a times of monoliths.
+But it's true, classic test pyramid was introduced in times of monoliths.
 Big monoliths.
 With millions and millions lines of code.
 
-In the world of microservices, this pyramid changes.
-It's no longer a pyramid.
-It's evolved into what's called Honeycomb Testing Strategy,
+In the world of microservices, this pyramid evolved.
+It's no longer even a pyramid.
+It's evolved into what's called [Honeycomb Testing Strategy](https://engineering.atspotify.com/2018/01/testing-of-microservices/),
 which shifts the focus from internal implementation to external integrations,
 hence it suggests the higher quantity of integration test with unit test sprinkled on top.
 
@@ -1009,7 +1049,7 @@ hence it suggests the higher quantity of integration test with unit test sprinkl
 Use [https://wiremock.org/](https://wiremock.org/)/[https://www.mock-server.com/](https://www.mock-server.com/)
 and [https://www.testcontainers.org/](https://www.testcontainers.org/) to mock/emulate **all** external dependencies
 
-### Start up the entire system `@SpringBootTest` ***without internal Mocks***
+### Start the entire service ***without internal Mocks***
 
 * Reuse the test setup as much as possible by introducing the base test class with all
   the necessary fixtures to start the service.
@@ -1034,14 +1074,14 @@ Mocks are allowed.
 ### Run integration tests separately from unit tests
 
 Use the [maven failsafe plugin](https://maven.apache.org/surefire/maven-failsafe-plugin/) or similar to separate slow
-integration tests from blazing-fast unit tests.
+integration tests from blazing-fast unit tests in your CI/CD pipeline.
 
 Your goal should be to receive as much feedback as quickly as possible.
 
 ### There's no reason for a backend to have bugs
 
 This is a little bit wild, but I believe that there is no reason for a modern backend service to have technical bugs.
-I'm not talking about bloody monoliths written in the last century.
+I'm not talking about bloody monoliths written in the past century.
 I'm talking about something a little bit more modern.
 Let's say written in the past 3 years.
 There are no logical reasons to have bugs there.
@@ -1063,7 +1103,7 @@ But everything else signals a high level of unprofessionalism form the engineers
 
 * [https://maven.apache.org/surefire/maven-failsafe-plugin/](https://maven.apache.org/surefire/maven-failsafe-plugin/)
 
-## Avoid fake test coverage
+### Avoid fake test coverage
 
 * Test coverage is a useful metric that can help **identify** untested code paths
 
@@ -1088,7 +1128,7 @@ But everything else signals a high level of unprofessionalism form the engineers
 
 ### How to identify “fake” tests?
 
-* Try to break the test - If the only way to break the test is to delete some lines of code, it might be a fake
+* Try to break the test — if the only way to break the test is to delete some lines of code, it might be a fake
   test
 
 * Vague argument matchers - screams fake
@@ -1099,7 +1139,7 @@ But everything else signals a high level of unprofessionalism form the engineers
 
 * Tests that test getters and setters — it’s not fake, but a horrible way to increase the test coverage
 
-* Tests that do not follow testing guidelines (not a recommendation) — most certainly fake 😉.
+* Tests that do not follow this testing guideline — most certainly fake 😉.
 
 # Other materials
 
