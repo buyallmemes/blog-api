@@ -63,7 +63,7 @@ So let's go through the most important aspects that I picked up over the years o
 
 # Understand the Classic Testing Pyramid
 
-It's all starts with the testing pyramid —
+It all starts with the testing pyramid —
 a testing strategy that emphasizes the importance of having a balanced mix of different types of tests.
 There are many types of tests, but they could be categorized into three groups:
 
