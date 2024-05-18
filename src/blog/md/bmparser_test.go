@@ -1,11 +1,11 @@
 package md
 
 import (
-	"reflect"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestSimpleMdToHTMLParsing(t *testing.T) {
+func TestShouldConvertSimpleMdToHTMLParsing(t *testing.T) {
 	actual := ToHTML("Hello, World!")
 
 	expected := &ParserMD{
@@ -14,12 +14,10 @@ func TestSimpleMdToHTMLParsing(t *testing.T) {
 		Anchor: "",
 		Date:   "",
 	}
-	if !reflect.DeepEqual(expected, actual) {
-		t.Errorf("expected:\n%#v\nbut was:\n%#v\n", expected, actual)
-	}
+	assert.Equal(t, expected, actual)
 }
 
-func TestFrontMatterMdToHTMLParsing(t *testing.T) {
+func TestShouldConvertFrontMatterMdToHTMLParsing(t *testing.T) {
 	source := `
 ---
 title: Hello, World!
@@ -35,7 +33,5 @@ Hello, World!
 		Anchor: "hello-world",
 		Date:   "29.03.2024",
 	}
-	if !reflect.DeepEqual(expected, actual) {
-		t.Errorf("expected:\n%#v\nbut was:\n%#v\n", expected, actual)
-	}
+	assert.Equal(t, expected, actual)
 }

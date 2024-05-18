@@ -1,7 +1,8 @@
 go 1.22.3
 
 use (
-	./src/rest
-	./src/blog/md
+	./src/api
 	./src/blog/fetcher
+	./src/blog/fetcher/github
+	./src/blog/md
 )
