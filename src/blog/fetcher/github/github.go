@@ -10,56 +10,62 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"slices"
 	"strings"
 )
 
-func New(context *gin.Context) *BlogFetcher {
-	return &BlogFetcher{
+func New(context *gin.Context) *GithubBlogFetcher {
+	return &GithubBlogFetcher{
 		Context: context,
 		Client:  newGitHubClientWithToken(),
 	}
 }
 
-type BlogFetcher struct {
+type GithubBlogFetcher struct {
 	Context *gin.Context
 	Client  *github.Client
 }
 
-func (gh *BlogFetcher) Fetch() *fetcher.Blog {
+func (gh *GithubBlogFetcher) Fetch() *fetcher.Blog {
 	blog := fetcher.NewBlog()
 	directoryContent := gh.GetDirectoryContent()
 
-	slices.Reverse(directoryContent)
-
+	channels := make([]chan fetcher.Post, 0)
 	for _, file := range directoryContent {
 		if !strings.HasSuffix(*file.Name, ".md") {
 			continue
 		}
-		post := gh.fetchPost(file)
-		blog.Posts = append(blog.Posts, post)
+		resultChannel := gh.fetchPost(file)
+		channels = append(channels, resultChannel)
+	}
+
+	for _, ch := range channels {
+		blog.Posts = append(blog.Posts, <-ch)
 	}
 
 	return blog
 }
 
-func (gh *BlogFetcher) fetchPost(file *github.RepositoryContent) fetcher.Post {
-	content := gh.GetPostContent(file.Name)
-	decoded, err := base64.StdEncoding.DecodeString(*content.Content)
-	if err != nil {
-		log.Fatal(err)
-	}
+func (gh *GithubBlogFetcher) fetchPost(file *github.RepositoryContent) chan fetcher.Post {
+	c := make(chan fetcher.Post)
+	go func() {
+		content := gh.GetPostContent(file.Name)
+		decoded, err := base64.StdEncoding.DecodeString(*content.Content)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	parserMD := md.ToHTML(string(decoded))
+		parserMD := md.ToHTML(string(decoded))
 
-	post := fetcher.Post{
-		Filename: *file.Name,
-		Content:  parserMD.Html,
-		Date:     parserMD.Date,
-		Title:    parserMD.Title,
-		Anchor:   parserMD.Anchor,
-	}
-	return post
+		post := fetcher.Post{
+			Filename: *file.Name,
+			Content:  parserMD.Html,
+			Date:     parserMD.Date,
+			Title:    parserMD.Title,
+			Anchor:   parserMD.Anchor,
+		}
+		c <- post
+	}()
+	return c
 }
 
 func newGitHubClientWithToken() *github.Client {
@@ -71,7 +77,7 @@ func newGitHubClientWithToken() *github.Client {
 	return client
 }
 
-func (gh *BlogFetcher) GetDirectoryContent() []*github.RepositoryContent {
+func (gh *GithubBlogFetcher) GetDirectoryContent() []*github.RepositoryContent {
 	_, directoryContent, resp, err := gh.Client.Repositories.GetContents(gh.Context, "buyallmemes", "blog-api", "posts", nil)
 	if err != nil {
 		log.Fatal(err)
@@ -82,7 +88,7 @@ func (gh *BlogFetcher) GetDirectoryContent() []*github.RepositoryContent {
 	return directoryContent
 }
 
-func (gh *BlogFetcher) GetPostContent(filename *string) *github.RepositoryContent {
+func (gh *GithubBlogFetcher) GetPostContent(filename *string) *github.RepositoryContent {
 	content, _, response, err := gh.Client.Repositories.GetContents(gh.Context, "buyallmemes", "blog-api", "posts/"+*filename, nil)
 	if err != nil {
 		log.Fatal(err)

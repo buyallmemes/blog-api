@@ -1,8 +1,10 @@
 package main
 
 import (
+	"buyallmemes/blog/fetcher"
+	"encoding/json"
 	"github.com/stretchr/testify/assert"
-	"log"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -14,7 +16,14 @@ func Test_getPosts(t *testing.T) {
 	w := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", "/posts", nil)
 	engine.ServeHTTP(w, request)
-	log.Println(w.Body.String())
 	assert.Equal(t, 200, w.Code)
+	body, err := io.ReadAll(w.Body)
+	assert.NoError(t, err)
 
+	blog := new(fetcher.Blog)
+	unmarshallingError := json.Unmarshal(body, &blog)
+	assert.NoError(t, unmarshallingError)
+	posts := blog.Posts
+	assert.True(t, len(posts) > 0)
+	assert.Equal(t, "Hello, World!", posts[len(posts)-1].Title)
 }
