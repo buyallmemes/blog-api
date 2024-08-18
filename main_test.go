@@ -1,7 +1,7 @@
 package main
 
 import (
-	"buyallmemes/blog/fetcher"
+	"buyallmemes.com/blog-api/pkg/blog/fetcher"
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"io"

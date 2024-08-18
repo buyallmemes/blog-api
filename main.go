@@ -1,8 +1,8 @@
 package main
 
 import (
-	"buyallmemes/blog/fetcher"
-	"buyallmemes/blog/fetcher/github"
+	"buyallmemes.com/blog-api/pkg/blog/fetcher"
+	"buyallmemes.com/blog-api/pkg/blog/fetcher/github"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

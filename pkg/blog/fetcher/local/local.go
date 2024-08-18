@@ -1,8 +1,8 @@
 package local
 
 import (
-	md "buyallmemes.com/blog/md/bmparser"
-	"buyallmemes/blog/fetcher"
+	fetcher "buyallmemes.com/blog-api/pkg/blog/fetcher"
+	"buyallmemes.com/blog-api/pkg/blog/md"
 	"log"
 	"os"
 	"path/filepath"
@@ -36,7 +36,7 @@ func (local *LocalBlogFetcher) Fetch() *fetcher.Blog {
 
 func constructAbsolutePath() string {
 	currentDir, _ := os.Getwd()
-	projectDir := strings.Index(currentDir, "/src/")
+	projectDir := strings.Index(currentDir, "/pkg/")
 	postsAbsolutePath := currentDir[:projectDir] + postsLocation
 	log.Println(postsAbsolutePath)
 	return postsAbsolutePath

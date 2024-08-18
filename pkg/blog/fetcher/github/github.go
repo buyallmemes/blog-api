@@ -1,8 +1,8 @@
 package github
 
 import (
-	"buyallmemes.com/blog/md/bmparser"
-	"buyallmemes/blog/fetcher"
+	"buyallmemes.com/blog-api/pkg/blog/fetcher"
+	"buyallmemes.com/blog-api/pkg/blog/md"
 	"encoding/base64"
 	"fmt"
 	"github.com/gin-gonic/gin"

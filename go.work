@@ -1,9 +1,0 @@
-go 1.22.3
-
-use (
-	./src/api
-	./src/blog/fetcher
-	./src/blog/fetcher/github
-	./src/blog/fetcher/local
-	./src/blog/md
-)
