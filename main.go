@@ -1,8 +1,8 @@
 package main
 
 import (
-	"buyallmemes.com/blog-api/pkg/blog/fetcher"
-	"buyallmemes.com/blog-api/pkg/blog/fetcher/github"
+	"buyallmemes.com/blog-api/src/blog/fetcher"
+	"buyallmemes.com/blog-api/src/blog/fetcher/local"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -23,7 +23,7 @@ func setupEngine() *gin.Engine {
 }
 
 func getPosts(context *gin.Context) {
-	backend := github.New(context)
+	backend := local.New()
 
 	blogFetcher := fetcher.BlogFetcher{
 		BlogProvider: backend,

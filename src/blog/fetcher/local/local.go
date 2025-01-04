@@ -1,8 +1,9 @@
 package local
 
 import (
-	fetcher "buyallmemes.com/blog-api/pkg/blog/fetcher"
-	"buyallmemes.com/blog-api/pkg/blog/md"
+	"buyallmemes.com/blog-api/src/blog/fetcher"
+	"buyallmemes.com/blog-api/src/blog/md"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -13,6 +14,10 @@ type LocalBlogFetcher struct {
 }
 
 const postsLocation = "/posts/"
+
+func New() *LocalBlogFetcher {
+	return &LocalBlogFetcher{}
+}
 
 func (local *LocalBlogFetcher) Fetch() *fetcher.Blog {
 	blog := fetcher.NewBlog()
@@ -35,10 +40,11 @@ func (local *LocalBlogFetcher) Fetch() *fetcher.Blog {
 }
 
 func constructAbsolutePath() string {
-	currentDir, _ := os.Getwd()
-	projectDir := strings.Index(currentDir, "/pkg/")
-	postsAbsolutePath := currentDir[:projectDir] + postsLocation
-	log.Println(postsAbsolutePath)
+	rootPath, err := getModuleRootPath()
+	if err != nil {
+		log.Fatal(err)
+	}
+	postsAbsolutePath := rootPath + postsLocation
 	return postsAbsolutePath
 }
 
@@ -71,6 +77,22 @@ func (local *LocalBlogFetcher) GetPostContent(path string, file os.DirEntry) str
 
 }
 
-func New() *LocalBlogFetcher {
-	return &LocalBlogFetcher{}
+func getModuleRootPath() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir, nil
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+
+	return "", fmt.Errorf("go.mod not found")
 }

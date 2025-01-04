@@ -1,8 +1,6 @@
-PACKAGES := $(shell go list ./pkg...)
-
 pre-build:
 	go mod tidy
 test:
-	go test -v $(PACKAGES)
+	go test ./...
 build: pre-build test
 	go build
