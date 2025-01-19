@@ -12,7 +12,7 @@ clean:
 	rm -rf build/
 go-build:
 	GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o ${BUILD_FOLDER}/
-	zip ${BUILD_FOLDER}/${NAME}.zip ${BUILD_FOLDER}/${NAME}
+	zip -r ${BUILD_FOLDER}/${NAME}.zip ${BUILD_FOLDER}/${NAME} resources/
 
 sam-build:
 	sam build
