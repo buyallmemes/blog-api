@@ -2,37 +2,48 @@ package main
 
 import (
 	"buyallmemes.com/blog-api/src/blog/fetcher"
-	"buyallmemes.com/blog-api/src/blog/fetcher/local"
-	"github.com/gin-gonic/gin"
+	"buyallmemes.com/blog-api/src/blog/fetcher/github"
+	"context"
+	"encoding/json"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/mfenderov/konfig"
+	"github.com/pkg/errors"
 	"log"
-	"net/http"
 )
 
-func main() {
-	engine := setupEngine()
-	err := engine.Run(":8080")
+func handler(ctx context.Context, _ events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	blog := getPosts(ctx)
+	body, err := json.Marshal(blog)
 	if err != nil {
-		log.Fatal(err)
+		return events.APIGatewayProxyResponse{
+			Body:       "Error marshalling blog posts",
+			StatusCode: 500,
+		}, errors.Wrap(err, "error marshalling blog posts")
+	}
+
+	return events.APIGatewayProxyResponse{
+		Body:       string(body),
+		StatusCode: 200,
+	}, nil
+}
+
+func init() {
+	err := konfig.LoadConfiguration("resources/application.yaml")
+	if err != nil {
+		log.Fatal(errors.Wrap(err, "error loading application properties"))
 	}
 }
 
-func setupEngine() *gin.Engine {
-	engine := gin.Default()
-	engine.GET("/posts", getPosts)
-	return engine
+func main() {
+	lambda.Start(handler)
 }
 
-func getPosts(context *gin.Context) {
-	backend := local.New()
+func getPosts(ctx context.Context) *fetcher.Blog {
+	backend := github.New()
 
 	blogFetcher := fetcher.BlogFetcher{
 		BlogProvider: backend,
 	}
-	blog := blogFetcher.Fetch()
-	context.JSON(http.StatusOK, blog)
-	errors := context.Errors
-	for _, err := range errors {
-		log.Println(err)
-		context.JSON(http.StatusInternalServerError, "Internal Server Error")
-	}
+	return blogFetcher.Fetch(ctx)
 }

@@ -2,26 +2,22 @@ package main
 
 import (
 	"buyallmemes.com/blog-api/src/blog/fetcher"
+	"context"
 	"encoding/json"
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"
-	"io"
-	"net/http"
-	"net/http/httptest"
 	"testing"
 )
 
 func Test_getPosts(t *testing.T) {
-	engine := setupEngine()
 
-	w := httptest.NewRecorder()
-	request, _ := http.NewRequest("GET", "/posts", nil)
-	engine.ServeHTTP(w, request)
-	assert.Equal(t, 200, w.Code)
-	body, err := io.ReadAll(w.Body)
+	response, err := handler(context.Background(), events.APIGatewayProxyRequest{})
+	assert.Equal(t, 200, response.StatusCode)
 	assert.NoError(t, err)
+	body := response.Body
 
-	blog := new(fetcher.Blog)
-	unmarshallingError := json.Unmarshal(body, &blog)
+	blog := fetcher.Blog{}
+	unmarshallingError := json.Unmarshal([]byte(body), &blog)
 	assert.NoError(t, unmarshallingError)
 	posts := blog.Posts
 	assert.True(t, len(posts) > 0)

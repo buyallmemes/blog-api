@@ -1,13 +1,16 @@
 package fetcher
 
-import "sort"
+import (
+	"context"
+	"sort"
+)
 
 type BlogFetcher struct {
 	BlogProvider Fetcher
 }
 
-func (bf *BlogFetcher) Fetch() *Blog {
-	blog := bf.BlogProvider.Fetch()
+func (bf *BlogFetcher) Fetch(ctx context.Context) *Blog {
+	blog := bf.BlogProvider.Fetch(ctx)
 	sortByFilename(blog.Posts)
 	return blog
 }
@@ -19,7 +22,7 @@ func sortByFilename(posts []Post) {
 }
 
 type Fetcher interface {
-	Fetch() *Blog
+	Fetch(ctx context.Context) *Blog
 }
 
 type Blog struct {

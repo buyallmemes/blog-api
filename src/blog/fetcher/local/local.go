@@ -3,6 +3,7 @@ package local
 import (
 	"buyallmemes.com/blog-api/src/blog/fetcher"
 	"buyallmemes.com/blog-api/src/blog/md"
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -19,7 +20,7 @@ func New() *LocalBlogFetcher {
 	return &LocalBlogFetcher{}
 }
 
-func (local *LocalBlogFetcher) Fetch() *fetcher.Blog {
+func (local *LocalBlogFetcher) Fetch(_ context.Context) *fetcher.Blog {
 	blog := fetcher.NewBlog()
 	postsAbsolutePath := constructAbsolutePath()
 	dir, _ := os.ReadDir(postsAbsolutePath)
