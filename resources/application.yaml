@@ -1,0 +1,5 @@
+server:
+  port: 8080
+
+github:
+  token: ${GITHUB_TOKEN:""}
