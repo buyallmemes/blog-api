@@ -22,6 +22,6 @@ jobs:
       - name: Build
         run: make build
       - name: Invoke local
-        run: sam local invoke
+        run: sam local invoke --debug
       - name: Deploy
         run: sam deploy --parameter-overrides GithubToken=${{ secrets.GITHUB_TOKEN }} --no-confirm-changeset
