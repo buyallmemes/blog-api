@@ -960,6 +960,45 @@ For example:
 Overall, architectural tests should be quite deep in your toolbox.
 Don’t just wave it left and right.
 
+### Avoid fake test coverage
+
+* Test coverage is a useful metric that can help **identify** untested code paths
+
+* Test coverage is **just a metric**, and **should not** be the sole purpose of writing tests
+
+* Writing tests solely to increase test coverage can lead to dangerous **fake** and **meaningless** coverage, where
+  tests are written to simply execute the code paths with no actually asserting or verifying results
+
+* Fake coverage leads to a **false** sense of security, where developers think they have thoroughly tested their code
+  when in reality they are not
+
+* Using tools like Sonar or other static code analyzers **can help** identify missed execution paths, but they **should
+  not** be used to enforce writing tests for the sake of coverage
+
+* Focus on writing tests that **actually** **test** functionality and ensure that code is working as expected,
+  rather than just trying to increase test coverage
+
+* Good test coverage alone **does not** guarantee the quality or correctness of code
+
+* **It is better to have no test coverage than a fake one.**
+  With no coverage, at least, there is an incentive to write tests
+
+### How to identify “fake” tests?
+
+* Try to break the test — if the only way to break the test is to delete some lines of code, it might be a fake
+  test
+
+* Vague argument matchers - screams fake
+
+* Messy overly complex tests — there’s a high probability that some coverage is fake
+
+* Tests without any meaningful assertions or verifications - 100% fake
+
+* Tests that test getters and setters — it’s not fake, but a horrible way to increase the test coverage
+
+* Tests that do not follow this testing guideline — most certainly fake 😉.
+
+
 ### References
 
 * [https://www.baeldung.com/java-unit-testing-best-practices](https://www.baeldung.com/java-unit-testing-best-practices)
@@ -1102,44 +1141,6 @@ But everything else signals a high level of unprofessionalism from the engineers
 * [https://www.mock-server.com/](https://www.mock-server.com/)
 
 * [https://maven.apache.org/surefire/maven-failsafe-plugin/](https://maven.apache.org/surefire/maven-failsafe-plugin/)
-
-### Avoid fake test coverage
-
-* Test coverage is a useful metric that can help **identify** untested code paths
-
-* Test coverage is **just a metric**, and **should not** be the sole purpose of writing tests
-
-* Writing tests solely to increase test coverage can lead to dangerous **fake** and **meaningless** coverage, where
-  tests are written to simply execute the code paths with no actually asserting or verifying results
-
-* Fake coverage leads to a **false** sense of security, where developers think they have thoroughly tested their code
-  when in reality they are not
-
-* Using tools like Sonar or other static code analyzers **can help** identify missed execution paths, but they **should
-  not** be used to enforce writing tests for the sake of coverage
-
-* Focus on writing tests that **actually** **test** functionality and ensure that code is working as expected,
-  rather than just trying to increase test coverage
-
-* Good test coverage alone **does not** guarantee the quality or correctness of code
-
-* **It is better to have no test coverage than a fake one.**
-  With no coverage, at least, there is an incentive to write tests
-
-### How to identify “fake” tests?
-
-* Try to break the test — if the only way to break the test is to delete some lines of code, it might be a fake
-  test
-
-* Vague argument matchers - screams fake
-
-* Messy overly complex tests — there’s a high probability that some coverage is fake
-
-* Tests without any meaningful assertions or verifications - 100% fake
-
-* Tests that test getters and setters — it’s not fake, but a horrible way to increase the test coverage
-
-* Tests that do not follow this testing guideline — most certainly fake 😉.
 
 # Other materials
 
