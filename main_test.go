@@ -10,7 +10,6 @@ import (
 )
 
 func Test_getPosts(t *testing.T) {
-
 	response, err := handler(context.Background(), events.APIGatewayProxyRequest{})
 	assert.Equal(t, 200, response.StatusCode)
 	assert.NoError(t, err)

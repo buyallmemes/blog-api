@@ -12,6 +12,17 @@ import (
 	"log"
 )
 
+func init() {
+	err := konfig.LoadConfiguration("resources/application.yaml")
+	if err != nil {
+		log.Fatal(errors.Wrap(err, "error loading application properties"))
+	}
+}
+
+func main() {
+	lambda.Start(handler)
+}
+
 func handler(ctx context.Context, _ events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	blog := getPosts(ctx)
 	body, err := json.Marshal(blog)
@@ -26,17 +37,6 @@ func handler(ctx context.Context, _ events.APIGatewayProxyRequest) (events.APIGa
 		Body:       string(body),
 		StatusCode: 200,
 	}, nil
-}
-
-func init() {
-	err := konfig.LoadConfiguration("resources/application.yaml")
-	if err != nil {
-		log.Fatal(errors.Wrap(err, "error loading application properties"))
-	}
-}
-
-func main() {
-	lambda.Start(handler)
 }
 
 func getPosts(ctx context.Context) *fetcher.Blog {

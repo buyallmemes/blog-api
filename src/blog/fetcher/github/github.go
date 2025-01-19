@@ -68,7 +68,7 @@ func (gh *GithubBlogFetcher) fetchPost(ctx context.Context, file *github.Reposit
 
 func newGitHubClientWithToken() *github.Client {
 	client := github.NewClient(nil)
-	token := konfig.GetEnv("GITHUB_TOKEN")
+	token := konfig.GetEnv("github.token")
 	if token != "" {
 		client.WithAuthToken(token)
 	}
