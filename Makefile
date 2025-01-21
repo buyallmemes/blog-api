@@ -10,14 +10,11 @@ go-test:
 	go test -race ./...
 clean:
 	rm -rf build/
-go-build:
-	GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o ${BUILD_FOLDER}/
-	zip -r ${BUILD_FOLDER}/${NAME}.zip ${BUILD_FOLDER}/${NAME} resources/
+	rm -rf .aws-sam/
 
-sam-build:
+build-BlogAPI:
+	GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o $(ARTIFACTS_DIR)/bootstrap
+	cp -R resources $(ARTIFACTS_DIR)
+
+build: clean go-test
 	sam build
-
-sam-deploy:
-	sam deploy
-
-build: clean go-test go-build sam-build

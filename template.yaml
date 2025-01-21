@@ -24,10 +24,10 @@ Resources:
   BlogAPI:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Metadata:
-      BuildMethod: go1.x
+      BuildMethod: makefile
     Properties:
       CodeUri: .
-      Handler: build/blog-api
+      Handler: bootstrap
       Runtime: provided.al2023
       Architectures:
         - arm64

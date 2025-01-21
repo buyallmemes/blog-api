@@ -21,7 +21,5 @@ jobs:
           aws-region: eu-central-1
       - name: Build
         run: make build
-      - name: Invoke local
-        run: sam local invoke --container-host docker --container-host-interface 0.0.0.0 --debug -e events/simple_get.json
       - name: Deploy
         run: sam deploy --parameter-overrides GithubToken=${{ secrets.GITHUB_TOKEN }} --no-confirm-changeset
