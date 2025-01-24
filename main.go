@@ -1,15 +1,16 @@
 package main
 
 import (
-	"buyallmemes.com/blog-api/src/blog/fetcher"
-	"buyallmemes.com/blog-api/src/blog/fetcher/github"
 	"context"
 	"encoding/json"
+	"log"
+
+	"buyallmemes.com/blog-api/src/blog/fetcher"
+	"buyallmemes.com/blog-api/src/blog/fetcher/github"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/mfenderov/konfig"
 	"github.com/pkg/errors"
-	"log"
 )
 
 func init() {

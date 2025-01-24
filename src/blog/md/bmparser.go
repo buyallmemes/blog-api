@@ -2,11 +2,12 @@ package md
 
 import (
 	"bytes"
+	"log"
+
 	"github.com/gosimple/slug"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
 	"go.abhg.dev/goldmark/frontmatter"
-	"log"
 )
 
 type ParserMD struct {

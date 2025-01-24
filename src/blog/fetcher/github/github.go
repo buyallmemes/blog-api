@@ -1,16 +1,17 @@
 package github
 
 import (
-	"buyallmemes.com/blog-api/src/blog/fetcher"
-	"buyallmemes.com/blog-api/src/blog/md"
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/google/go-github/v62/github"
-	"github.com/mfenderov/konfig"
 	"log"
 	"net/http"
 	"strings"
+
+	"buyallmemes.com/blog-api/src/blog/fetcher"
+	"buyallmemes.com/blog-api/src/blog/md"
+	"github.com/google/go-github/v62/github"
+	"github.com/mfenderov/konfig"
 )
 
 func New() *GithubBlogFetcher {

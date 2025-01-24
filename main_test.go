@@ -1,12 +1,13 @@
 package main
 
 import (
-	"buyallmemes.com/blog-api/src/blog/fetcher"
 	"context"
 	"encoding/json"
+	"testing"
+
+	"buyallmemes.com/blog-api/src/blog/fetcher"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func Test_getPosts(t *testing.T) {

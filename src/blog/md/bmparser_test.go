@@ -1,8 +1,9 @@
 package md
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShouldConvertSimpleMdToHTMLParsing(t *testing.T) {

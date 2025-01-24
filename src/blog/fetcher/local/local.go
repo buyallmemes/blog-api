@@ -1,14 +1,15 @@
 package local
 
 import (
-	"buyallmemes.com/blog-api/src/blog/fetcher"
-	"buyallmemes.com/blog-api/src/blog/md"
 	"context"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"buyallmemes.com/blog-api/src/blog/fetcher"
+	"buyallmemes.com/blog-api/src/blog/md"
 )
 
 type LocalBlogFetcher struct {
