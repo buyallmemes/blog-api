@@ -14,7 +14,7 @@ import (
 )
 
 func init() {
-	err := konfig.LoadConfiguration("resources/application.yaml")
+	err := konfig.Load()
 	if err != nil {
 		log.Fatal(errors.Wrap(err, "error loading application properties"))
 	}
