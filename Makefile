@@ -1,7 +1,7 @@
 NAME=blog-api
 BUILD_FOLDER=build
 
-made deps:
+deps:
 	@go mod tidy
 	@go mod vendor
 pre-build:
