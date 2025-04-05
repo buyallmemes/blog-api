@@ -25,4 +25,4 @@ jobs:
       - name: Build
         run: make build
       - name: Deploy
-        run: sam deploy --parameter-overrides GithubToken=${{ secrets.GITHUB_TOKEN }} --no-confirm-changeset
+        run: sam deploy --parameter-overrides GithubToken=${{ secrets.POSTS_ACCESS_TOKEN }} --no-confirm-changeset
