@@ -10,7 +10,7 @@ import (
 
 	"buyallmemes.com/blog-api/src/blog/fetcher"
 	"buyallmemes.com/blog-api/src/blog/md"
-	"github.com/google/go-github/v62/github"
+	"github.com/google/go-github/v70/github"
 	"github.com/mfenderov/konfig"
 )
 
@@ -71,7 +71,7 @@ func newGitHubClientWithToken() *github.Client {
 	client := github.NewClient(nil)
 	token := konfig.GetEnv("github.token")
 	if token != "" {
-		client.WithAuthToken(token)
+		client = client.WithAuthToken(token)
 	}
 	return client
 }

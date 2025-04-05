@@ -22,3 +22,7 @@ update:
 	@go get -u ./...
 	@go mod tidy
 	@go mod vendor
+
+run:
+	@sam build
+	@sam local start-api
