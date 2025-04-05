@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.47.0
 	github.com/google/go-github/v62 v62.0.0
 	github.com/gosimple/slug v1.15.0
-	github.com/mfenderov/konfig v0.10.0
+	github.com/mfenderov/konfig v0.11.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/yuin/goldmark v1.7.8

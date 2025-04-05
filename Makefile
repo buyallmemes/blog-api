@@ -1,5 +1,4 @@
 NAME=blog-api
-BUILD_FOLDER=build
 
 deps:
 	@go mod tidy
@@ -10,7 +9,6 @@ go-test:
 	@go test -race ./...
 	@go vet ./...
 clean:
-	@rm -rf build/
 	@rm -rf .aws-sam/
 
 build-BlogAPI:
