@@ -19,3 +19,8 @@ build-BlogAPI:
 
 build: clean go-test
 	@sam build
+
+update:
+	@go get -u ./...
+	@go mod tidy
+	@go mod vendor
