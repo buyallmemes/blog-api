@@ -3,13 +3,13 @@ module buyallmemes.com/blog-api
 go 1.24
 
 require (
-	github.com/aws/aws-lambda-go v1.47.0
+	github.com/aws/aws-lambda-go v1.48.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gosimple/slug v1.15.0
-	github.com/mfenderov/konfig v0.11.0
+	github.com/mfenderov/konfig v0.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
-	github.com/yuin/goldmark v1.7.8
+	github.com/yuin/goldmark v1.7.11
 	go.abhg.dev/goldmark/frontmatter v0.2.0
 )
 
