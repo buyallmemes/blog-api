@@ -68,3 +68,22 @@ func TestBlogService_GetAllPosts_Error(t *testing.T) {
 	assert.Equal(t, expectedError, err)
 	assert.Nil(t, result)
 }
+
+func TestBlogService_GetAllPosts_EmptyPosts(t *testing.T) {
+	// Create a stub repository that returns an empty slice
+	repo := &StubPostRepository{posts: []blog.Post{}}
+	service := NewBlogService(repo)
+
+	// Call the method
+	result, err := service.GetAllPosts(context.Background())
+
+	// Assert that there was no error
+	assert.NoError(t, err)
+
+	// Assert that the result is not nil
+	assert.NotNil(t, result)
+
+	// Assert that the Posts field is not nil but empty
+	assert.NotNil(t, result.Posts)
+	assert.Empty(t, result.Posts)
+}
