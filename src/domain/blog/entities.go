@@ -6,11 +6,11 @@ import (
 
 // Post represents a blog post
 type Post struct {
-	Filename string
-	Content  string
-	Date     string
-	Title    string
-	Anchor   string
+	Filename string `json:"filename"`
+	Content  string `json:"content"`
+	Date     string `json:"date"`
+	Title    string `json:"title"`
+	Anchor   string `json:"anchor"`
 }
 
 // ParsedMarkdown represents the result of parsing markdown content
@@ -23,7 +23,7 @@ type ParsedMarkdown struct {
 
 // Blog represents a collection of blog posts
 type Blog struct {
-	Posts []Post `json:"Posts"`
+	Posts []Post `json:"posts"`
 }
 
 // NewBlog creates a new Blog instance
@@ -37,7 +37,7 @@ func NewBlog() *Blog {
 func (b Blog) MarshalJSON() ([]byte, error) {
 	type Alias Blog
 	return json.Marshal(&struct {
-		Posts []Post `json:"Posts"`
+		Posts []Post `json:"posts"`
 		*Alias
 	}{
 		Posts: func() []Post {

@@ -70,7 +70,7 @@ func TestEmptyBlogSerialization(t *testing.T) {
 
 	// Check the JSON structure
 	jsonString := string(jsonData)
-	assert.Contains(t, jsonString, "\"Posts\":[]")
+	assert.Contains(t, jsonString, "\"posts\":[]")
 
 	// Deserialize from JSON
 	var deserializedBlog Blog
@@ -91,8 +91,8 @@ func TestNilBlogSerialization(t *testing.T) {
 
 	// Check the JSON structure - should be empty array, not null
 	jsonString := string(jsonData)
-	assert.Contains(t, jsonString, "\"Posts\":[]")
-	assert.NotContains(t, jsonString, "\"Posts\":null")
+	assert.Contains(t, jsonString, "\"posts\":[]")
+	assert.NotContains(t, jsonString, "\"posts\":null")
 
 	// Deserialize from JSON
 	var deserializedBlog Blog

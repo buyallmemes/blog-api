@@ -23,6 +23,5 @@ update:
 	@go mod tidy
 	@go mod vendor
 
-run:
-	@sam build
+run: build
 	@sam local start-api
