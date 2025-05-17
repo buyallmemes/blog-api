@@ -1,133 +1,147 @@
-# Blog API Developer Guidelines
+# Developer Guidelines
 
 ## Project Overview
 
-This is a serverless Go application that serves blog posts via AWS Lambda. The application fetches Markdown files from
-GitHub, converts them to HTML, and serves them through an API Gateway endpoint.
+This project is a **serverless Go application** that serves blog posts through an API. It fetches Markdown files from a
+remote source (e.g., GitHub), converts them to HTML, and serves them via an API Gateway endpoint. The application is
+designed for scalability, clean structure, and testability.
 
 ## Tech Stack
 
-- **Language**: Go 1.24
+- **Language**: Go 1.2x
 - **Framework**: AWS Serverless Application Model (SAM)
 - **Runtime**: AWS Lambda (ARM64)
-- **Dependencies**:
+- **Key Dependencies**:
     - AWS Lambda Go SDK
-    - GitHub API client
-    - Goldmark (Markdown processing)
-    - Konfig (configuration management)
+  - Markdown parser (e.g., Goldmark)
+  - Configuration manager (e.g., Konfig)
+  - GitHub or remote content fetcher
 
 ## Project Structure
 
-```
-blog-api/
-├── .github/workflows/    # CI/CD workflows
-├── posts/                # Blog post content in Markdown
-├── resources/            # Configuration files
-├── src/                  # Application source code
-│   └── blog/             # Blog-related functionality
-│       ├── fetcher/      # Post fetching logic
-│       └── md/           # Markdown processing
-├── main.go               # Application entry point
-├── main_test.go          # Main tests
-├── Makefile              # Build and run commands
-└── template.yaml         # AWS SAM template
-```
+- `.github/workflows/`: CI/CD workflows
+- `posts/`: Blog post content in Markdown
+- `resources/`: Configuration files (YAML, etc.)
+- `src/`: Application source code
+    - `domain/`: Domain layer – entities and interfaces
+        - `blog/`: Domain models and contracts
+    - `usecase/`: Use case layer – business logic
+        - `blog/`: Blog service logic
+    - `infrastructure/`: Infrastructure – external interfaces
+        - `markdown/`: Markdown parser implementation
+        - `repository/`: Content repository implementations
+            - `github/`: GitHub-based repository
+            - `local/`: Local file-based repository
+    - `legacy/`: Legacy or deprecated code
+- `main.go`: Application entry point
+- `main_test.go`: Basic integration tests
+- `Makefile`: Common build/test/run commands
+- `template.yaml`: AWS SAM template
 
 ## Getting Started
 
 ### Prerequisites
 
-- Go 1.24 or later
+- Go 1.2x
 - AWS SAM CLI
-- GitHub token (for fetching posts)
+- Valid credentials (e.g., GitHub token if using private content)
 
 ### Setup
 
-1. Clone the repository
-2. Run `make deps` to install dependencies
+```bash
+git clone <your-repo>
+cd <project>
+make deps
+```
 
 ## Development Workflow
 
-### Running Locally
+### Run Locally
 
 ```bash
 make run
 ```
 
-This builds the application and starts a local API Gateway emulator.
+Starts a local Lambda/API Gateway emulator.
 
-### Testing
+### Run Tests
 
 ```bash
 make go-test
 ```
 
-This runs all tests with race detection and Go's vet tool.
+Runs all unit tests with race detection and linting.
 
-### Building
+### Build
 
 ```bash
 make build
 ```
 
-This cleans previous builds, runs tests, and builds the application using SAM.
+Cleans, tests, and compiles the project using AWS SAM.
 
-### Deployment
+### Deploy
 
-The project uses GitHub Actions for CI/CD. See the workflows in `.github/workflows/`.
+This project uses GitHub Actions for CI/CD. See `.github/workflows/` for pipeline definitions.
 
 ## Best Practices
 
 ### Code Organization
 
-- Keep business logic in the `src` directory
-- Maintain separation of concerns (fetching, parsing, etc.)
-- Use interfaces for dependency injection and testability
-
-### Testing
-
-- Write unit tests for all new functionality
-- Ensure tests are independent and don't rely on external services
-- Run tests before submitting changes
+- Follow **Clean Architecture**: separate domain, use case, and infrastructure layers
+- Place business logic in the `src` directory
+- Use interfaces for clear contracts and testability
+- Avoid tight coupling between layers
 
 ### Configuration
 
-- Use environment variables for configuration
-- Store configuration in `resources/application.yaml`
-- Never commit sensitive information (use parameters in SAM template)
+- Use environment variables for sensitive configuration
+- Store default values in `resources/application.yaml`
+- Never commit credentials — use SAM `Parameters` or AWS Secrets Manager
+
+### Testing
+
+- Write **unit tests** for all new functionality
+- Avoid relying on real external services; use mocks or fakes
+- Keep tests fast, isolated, and deterministic
 
 ### Error Handling
 
-- Use proper error wrapping with context
-- Log errors with appropriate detail
-- Return meaningful HTTP status codes
+- Always wrap errors with context using `fmt.Errorf` or `errors.Join`
+- Log errors clearly and consistently
+- Return meaningful HTTP status codes in handlers
 
 ## Architectural Principles
 
 ### Clean Architecture
 
-This project follows Clean Architecture principles, organizing code into layers:
+Organize your code into layers with clear responsibilities:
 
-- **Domain Layer** (`src/domain`): Contains business entities and core business rules
-- **Use Case Layer** (`src/usecase`): Application-specific business rules
-- **Infrastructure Layer** (`src/infrastructure`): Frameworks, drivers, and external interfaces
+- **Domain** (`src/domain`) – Core entities and interfaces
+- **Use Case** (`src/usecase`) – Application business logic
+- **Infrastructure** (`src/infrastructure`) – External systems (e.g., GitHub, Markdown)
 
-Benefits of this architecture include:
+Benefits:
 
-- Independence from frameworks
-- Testability
-- Independence from UI
-- Independence from database
-- Independence from external agencies
+- Framework agnostic
+- Testable components
+- Easy to evolve
+- Clear boundaries
 
 ### Clean Code Practices
 
-The project adheres to Clean Code principles:
-
-- Write self-explanatory code with meaningful names
-- Follow the SOLID principles.
+- Use descriptive, intention-revealing names
 - Keep functions small and focused
 - Minimize side effects
-- Write comprehensive tests
+- Follow the **SOLID principles**
+- Keep formatting consistent
 - Refactor regularly
-- Use consistent formatting and style
+- Avoid unnecessary abstractions
+
+## References
+
+- *Clean Code* – Robert C. Martin
+- *Clean Architecture* – Robert C. Martin
+- *Refactoring* – Martin Fowler
+- *Tidy First?* – Kent Beck
+- *Extreme Programming Explained* – Kent Beck  
