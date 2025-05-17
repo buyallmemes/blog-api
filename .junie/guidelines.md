@@ -101,3 +101,33 @@ The project uses GitHub Actions for CI/CD. See the workflows in `.github/workflo
 - Use proper error wrapping with context
 - Log errors with appropriate detail
 - Return meaningful HTTP status codes
+
+## Architectural Principles
+
+### Clean Architecture
+
+This project follows Clean Architecture principles, organizing code into layers:
+
+- **Domain Layer** (`src/domain`): Contains business entities and core business rules
+- **Use Case Layer** (`src/usecase`): Application-specific business rules
+- **Infrastructure Layer** (`src/infrastructure`): Frameworks, drivers, and external interfaces
+
+Benefits of this architecture include:
+
+- Independence from frameworks
+- Testability
+- Independence from UI
+- Independence from database
+- Independence from external agencies
+
+### Clean Code Practices
+
+The project adheres to Clean Code principles:
+
+- Write self-explanatory code with meaningful names
+- Follow the SOLID principles.
+- Keep functions small and focused
+- Minimize side effects
+- Write comprehensive tests
+- Refactor regularly
+- Use consistent formatting and style
