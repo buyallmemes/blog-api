@@ -9,7 +9,7 @@ require (
 	github.com/mfenderov/konfig v0.14.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
-	github.com/yuin/goldmark v1.7.11
+	github.com/yuin/goldmark v1.7.12
 	go.abhg.dev/goldmark/frontmatter v0.2.0
 )
 
