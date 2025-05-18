@@ -35,7 +35,7 @@ func (r *LocalRepository) FetchPosts(ctx context.Context) ([]blog.Post, error) {
 	var wg sync.WaitGroup
 	posts := make([]blog.Post, 0)
 	postsChan := make(chan blog.Post)
-	errorsChan := make(chan error)
+	errorsChan := make(chan error, len(dir))
 	done := make(chan bool)
 
 	// Start a goroutine to collect results
@@ -46,25 +46,34 @@ func (r *LocalRepository) FetchPosts(ctx context.Context) ([]blog.Post, error) {
 		done <- true
 	}()
 
-	// Process each markdown file
+	// Create a buffered channel to act as a job queue
+	jobQueue := make(chan os.DirEntry, len(dir))
+
+	// Launch a fixed number of worker goroutines
+	numWorkers := 5 // Adjust this number based on system capacity
+	for i := 0; i < numWorkers; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for file := range jobQueue {
+				post, err := r.fetchPost(file)
+				if err != nil {
+					errorsChan <- err
+					continue
+				}
+				postsChan <- post
+			}
+		}()
+	}
+
+	// Enqueue jobs for workers
 	for _, file := range dir {
 		if !strings.HasSuffix(file.Name(), ".md") {
 			continue
 		}
-
-		wg.Add(1)
-		go func(file os.DirEntry) {
-			defer wg.Done()
-
-			post, err := r.fetchPost(file)
-			if err != nil {
-				errorsChan <- err
-				return
-			}
-
-			postsChan <- post
-		}(file)
+		jobQueue <- file
 	}
+	close(jobQueue)
 
 	// Wait for all goroutines to finish and close channels
 	go func() {
@@ -109,7 +118,7 @@ func (r *LocalRepository) getPostContent(file os.DirEntry) (string, error) {
 	filePath := filepath.Join(r.postsPath, file.Name())
 	fileContent, err := os.ReadFile(filePath)
 	if err != nil {
-		return "", fmt.Errorf("error reading file: %w", err)
+		return "", fmt.Errorf("error reading file %s: %w", filePath, err)
 	}
 	return string(fileContent), nil
 }

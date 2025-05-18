@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 	"time"
 
+	"buyallmemes.com/blog-api/src/infrastructure/logging"
 	"buyallmemes.com/blog-api/src/infrastructure/markdown"
 	"buyallmemes.com/blog-api/src/infrastructure/repository/github"
 	blogUsecase "buyallmemes.com/blog-api/src/usecase/blog"
@@ -16,6 +17,9 @@ import (
 	"github.com/mfenderov/konfig"
 	"github.com/pkg/errors"
 )
+
+// Global logger instance
+var logger *logging.Logger
 
 // Application errors
 var (
@@ -31,6 +35,7 @@ const (
 	GitHubRepoKey  = "github.repo"
 	GitHubPathKey  = "github.path"
 	GitHubTokenKey = "github.token"
+	DebugModeKey   = "debug.mode"
 )
 
 // Default values
@@ -42,8 +47,18 @@ const (
 )
 
 func init() {
+	// Initialize the logger
+	logConfig := logging.DefaultConfig()
+	if isDebugMode() {
+		logConfig.Level = logging.DebugLevel
+		logConfig.AddSource = true
+	}
+	logger = logging.New(logConfig)
+
+	// Load configuration
 	if err := konfig.Load(); err != nil {
-		log.Fatal(errors.Wrap(err, "error loading application properties"))
+		logger.Error("Failed to load application properties", "error", err)
+		os.Exit(1)
 	}
 }
 
@@ -59,7 +74,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	// Create the blog service
 	blogService, err := createBlogService()
 	if err != nil {
-		log.Printf("Error creating blog service: %v", err)
+		logger.Error("Error creating blog service", "error", err)
 		return createErrorResponse(http.StatusInternalServerError, "Internal server error"),
 			errors.Wrap(err, "error creating blog service")
 	}
@@ -67,7 +82,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	// Get all blog posts
 	blogData, err := blogService.GetAllPosts(ctx)
 	if err != nil {
-		log.Printf("Error fetching blog posts: %v", err)
+		logger.Error("Error fetching blog posts", "error", err)
 		return createErrorResponse(http.StatusInternalServerError, "Error fetching blog posts"),
 			errors.Wrap(err, "error fetching blog posts")
 	}
@@ -75,7 +90,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	// Marshal the blog data to JSON
 	body, err := json.Marshal(blogData)
 	if err != nil {
-		log.Printf("Error marshalling blog posts: %v", err)
+		logger.Error("Error marshalling blog posts", "error", err)
 		return createErrorResponse(http.StatusInternalServerError, "Error processing blog posts"),
 			errors.Wrap(err, "error marshalling blog posts")
 	}
@@ -124,12 +139,20 @@ func createErrorResponse(statusCode int, message string) events.APIGatewayProxyR
 	}
 }
 
+// isDebugMode checks if debug mode is enabled
+func isDebugMode() bool {
+	debugMode := konfig.GetEnv(DebugModeKey)
+	return debugMode == "true" || debugMode == "1"
+}
+
 // getEnvWithDefault gets an environment variable with a default value
 func getEnvWithDefault(key, defaultValue string) string {
 	value := konfig.GetEnv(key)
 	if value == "" {
-		// Log that we're using a default value
-		log.Printf("Using default value for %s: %s", key, defaultValue)
+		// Log that we're using a default value if debug mode is enabled
+		if isDebugMode() {
+			logger.Debug("Using default value", "key", key, "value", defaultValue)
+		}
 		return defaultValue
 	}
 	return value

@@ -3,12 +3,29 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"os"
 	"testing"
 
 	"buyallmemes.com/blog-api/src/domain/blog"
+	"buyallmemes.com/blog-api/src/infrastructure/logging"
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/mfenderov/konfig"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestMain(m *testing.M) {
+	// Initialize the logger for tests
+	logger = logging.New(logging.DefaultConfig())
+
+	// Load configuration
+	if err := konfig.Load(); err != nil {
+		logger.Error("Failed to load application properties", "error", err)
+		os.Exit(1)
+	}
+
+	// Run tests
+	os.Exit(m.Run())
+}
 
 func Test_handler(t *testing.T) {
 	response, err := handler(context.Background(), events.APIGatewayProxyRequest{})
