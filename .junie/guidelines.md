@@ -107,41 +107,36 @@ This project uses GitHub Actions for CI/CD. See `.github/workflows/` for pipelin
 
 ### Error Handling
 
-- Always wrap errors with context using `fmt.Errorf` or `errors.Join`
-- Log errors clearly and consistently
-- Return meaningful HTTP status codes in handlers
+- Use proper error wrapping with context
+- Log errors with appropriate detail
+- Return meaningful HTTP status codes
 
 ## Architectural Principles
 
 ### Clean Architecture
 
-Organize your code into layers with clear responsibilities:
+This project follows Clean Architecture principles, organizing code into layers:
 
-- **Domain** (`src/domain`) – Core entities and interfaces
-- **Use Case** (`src/usecase`) – Application business logic
-- **Infrastructure** (`src/infrastructure`) – External systems (e.g., GitHub, Markdown)
+- **Domain Layer** (`src/domain`): Contains business entities and core business rules
+- **Use Case Layer** (`src/usecase`): Application-specific business rules
+- **Infrastructure Layer** (`src/infrastructure`): Frameworks, drivers, and external interfaces
 
-Benefits:
+Benefits of this architecture include:
 
-- Framework agnostic
-- Testable components
-- Easy to evolve
-- Clear boundaries
+- Independence from frameworks
+- Testability
+- Independence from UI
+- Independence from database
+- Independence from external agencies
 
 ### Clean Code Practices
 
-- Use descriptive, intention-revealing names
+The project adheres to Clean Code principles:
+
+- Write self-explanatory code with meaningful names
+- Follow the SOLID principles.
 - Keep functions small and focused
 - Minimize side effects
-- Follow the **SOLID principles**
-- Keep formatting consistent
+- Write comprehensive tests
 - Refactor regularly
-- Avoid unnecessary abstractions
-
-## References
-
-- *Clean Code* – Robert C. Martin
-- *Clean Architecture* – Robert C. Martin
-- *Refactoring* – Martin Fowler
-- *Tidy First?* – Kent Beck
-- *Extreme Programming Explained* – Kent Beck  
+- Use consistent formatting and style
