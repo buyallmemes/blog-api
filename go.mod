@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.48.0
 	github.com/google/go-github/v70 v70.0.0
 	github.com/gosimple/slug v1.15.0
-	github.com/mfenderov/konfig v0.14.0
+	github.com/mfenderov/konfig v0.15.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.10.0
 	github.com/yuin/goldmark v1.7.12
@@ -20,5 +20,6 @@ require (
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
+	github.com/stretchr/objx v0.5.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

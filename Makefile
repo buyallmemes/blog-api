@@ -13,6 +13,7 @@ clean:
 
 build-BlogAPI:
 	@GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o $(ARTIFACTS_DIR)/bootstrap
+	@cp -R posts $(ARTIFACTS_DIR)
 	@cp -R resources $(ARTIFACTS_DIR)
 
 build: clean go-test

@@ -110,16 +110,13 @@ func createBlogService() (blogUsecase.BlogService, error) {
 	// Create the markdown parser
 	markdownParser := markdown.NewGoldmarkParser()
 
-	// Get GitHub configuration from environment variables
-	config := github.NewConfig(
-		getEnvWithDefault(GitHubOwnerKey, DefaultGitHubOwner),
-		getEnvWithDefault(GitHubRepoKey, DefaultGitHubRepo),
-		getEnvWithDefault(GitHubPathKey, DefaultGitHubPath),
-		konfig.GetEnv(GitHubTokenKey),
-	)
-
-	// Create the repository
-	repository, err := github.NewGitHubRepository(markdownParser, config)
+	// Use GitHub repository in production
+	owner := getEnvWithDefault(GitHubOwnerKey, DefaultGitHubOwner)
+	repo := getEnvWithDefault(GitHubRepoKey, DefaultGitHubRepo)
+	path := getEnvWithDefault(GitHubPathKey, DefaultGitHubPath)
+	token := getEnvWithDefault(GitHubTokenKey, "")
+	cfg := github.NewConfig(owner, repo, path, token)
+	repository, err := github.NewGitHubRepository(markdownParser, cfg)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %v", ErrServiceCreation, err)
 	}
